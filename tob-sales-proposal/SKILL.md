@@ -44,11 +44,11 @@ tob-sales-proposal
 
 ```bash
 # 基础用法
-tob-sales-proposal --client "某银行" --industry "金融" --product "RAG知识库"
+tob-sales-proposal --client "某银行" --industry "金融" --product "智能知识库"
 
 # 完整参数
 tob-sales-proposal \
-  --client "中信集团" \
+  --client "某金融集团" \
   --industry "金融" \
   --painpoints "数据孤岛,知识管理混乱" \
   --product "智能知识库" \
@@ -84,13 +84,14 @@ tob-sales-proposal --rfp ./client_rfp.pdf --output ./proposal.md
 
 ## 案例库
 
-内置 6 个实战案例：
-- 中信集团 - 数字化转型规划
-- 力方力合 - 供应链系统建设
-- 东方电气 - 采购与供应链规划
-- 联勤保障部队 - 军事物流信息化
-- 中国通用 - 供应链中台建设
-- 县域智慧城市 - 数字化建设
+内置 7 个行业案例模板：
+- 某大型金融集团 - 数字化转型规划
+- 某知名服装品牌 - 供应链系统建设
+- 某装备制造集团 - 采购与供应链规划
+- 某大型物流企业 - 物流信息化平台建设
+- 某央企集团 - 供应链中台建设
+- 某县域政府 - 智慧城市数字化建设
+- 某金融机构 - AI知识库建设
 
 ## 安装
 
