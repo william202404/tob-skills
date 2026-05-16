@@ -7,6 +7,11 @@ class ProposalGenerator {
     this.config = config;
     this.templateDir = path.join(__dirname, '..', 'templates');
     this.dataDir = path.join(__dirname, '..', 'data');
+
+    // 注册 Handlebars helpers
+    Handlebars.registerHelper('split', function(str, delimiter) {
+      return (str || '').split(delimiter);
+    });
   }
 
   async generate() {
