@@ -3,27 +3,14 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
-import sys
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-SCRIPT_DIR = Path(__file__).resolve().parent
-if str(SCRIPT_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPT_DIR))
-
-try:
-    from unified_knowledge_search import unified_search  # type: ignore
-except Exception as e:  # pragma: no cover
-    unified_search = None
-    IMPORT_ERROR = e
-else:
-    IMPORT_ERROR = None
-
-STOPWORDS = set("客户 我们 对方 竞品 虽然 但是 因为 所以 一个 这个 那个 阶段 有限 表现 更好 倾向 重新 评估".split())
 PRIVATE_NAME_TOKENS = {"李宁", "李寧", "lining", "william"}
+STOPWORDS = set("客户 我们 对方 竞品 虽然 但是 因为 所以 一个 这个 那个 阶段 有限 表现 更好 倾向 重新 评估".split())
+
 
 @dataclass
 class WinLossInput:
@@ -35,15 +22,15 @@ class WinLossInput:
     event: str
     amount: str = ""
 
+
 @dataclass
-class Evidence:
-    strategy: str
-    title: str
-    path: str
-    snippet: str
-    score: float
-    confidence: str
-    source: str
+class RuleCause:
+    name: str
+    prob: int
+    diagnosis: str
+    rule_basis: str
+    signals: list[str]
+    actions: list[str]
 
 
 def prompt_if_missing(v: str | None, label: str, default: str = "") -> str:
@@ -53,21 +40,7 @@ def prompt_if_missing(v: str | None, label: str, default: str = "") -> str:
     return s or default
 
 
-def extract_keywords(text: str) -> list[str]:
-    zh = re.findall(r"[\u4e00-\u9fffA-Za-z0-9%]+", text)
-    terms: list[str] = []
-    for t in zh:
-        if len(t) >= 2 and t not in STOPWORDS:
-            terms.append(t)
-    # business phrase hints
-    hints = ["价格", "预算", "功能", "CTO", "换人", "业务部门", "技术团队", "POC", "性能", "报价", "审批", "决策链", "价值"]
-    for h in hints:
-        if h.lower() in text.lower():
-            terms.append(h)
-    return list(dict.fromkeys(terms))[:12]
-
 def sanitize_filename(name: str) -> str:
-    """Show only a safe basename and strip personal-name tokens from filenames."""
     if not name:
         return ""
     base = Path(str(name)).name
@@ -79,257 +52,192 @@ def sanitize_filename(name: str) -> str:
 
 
 def sanitize_text(text: str) -> str:
-    """Remove local absolute paths and personal filename tokens from output text."""
     if not text:
         return ""
 
     def repl(m: re.Match[str]) -> str:
         return sanitize_filename(m.group(0))
 
-    # macOS/Linux absolute paths: keep only basename. First handle paths with spaces up to common file extensions.
-    text = re.sub(r"/(?:Users|Volumes|private|tmp|var)/[^，。；：、（）()<>\[\]{}'\"]+?\.(?:pptx?|docx?|xlsx?|pdf|md|txt|xmind|html?)", repl, str(text), flags=re.IGNORECASE)
+    text = re.sub(
+        r"/(?:Users|Volumes|private|tmp|var)/[^，。；：、（）()<>\[\]{}'\"]+?\.(?:pptx?|docx?|xlsx?|pdf|md|txt|xmind|html?)",
+        repl,
+        str(text),
+        flags=re.IGNORECASE,
+    )
     text = re.sub(r"/(?:Users|Volumes|private|tmp|var)/[^\s，。；：、（）()<>\[\]{}'\"]+", repl, text)
-    # Windows absolute paths just in case.
     text = re.sub(r"[A-Za-z]:\\[^\s，。；：、（）()<>\[\]{}'\"]+", repl, text)
     for token in PRIVATE_NAME_TOKENS:
         text = re.sub(re.escape(token), "", text, flags=re.IGNORECASE)
     return text.strip()
 
 
-def strategy_params(strategy: str) -> tuple[str, str]:
-    """Return narrow per-strategy retrieval hints to avoid all paths converging."""
-    if strategy == "行业模式匹配":
-        return "行业 痛点 成功案例", "行业方案/客户案例"
-    if strategy == "竞品模式匹配":
-        return "竞品 定价 优劣势 反制", "竞品分析/竞争策略"
-    if strategy == "阶段风险匹配":
-        return "商机 阶段 风险 合同 里程碑", "项目记录/售前过程"
-    if strategy == "关键词匹配":
-        return "客户原话 关键事件 相似场景", "项目记录/会议纪要"
-    return "丢单 复盘 改进建议", "经验总结/方法论"
+def has_any(text: str, words: list[str]) -> bool:
+    low = text.lower()
+    return any(w.lower() in low for w in words)
 
 
-def run_search(strategy: str, query: str, top_k: int = 5) -> tuple[list[Evidence], list[dict[str, str]]]:
-    if unified_search is None:
-        return [], [{"type": "knowledge_unavailable", "message": f"未配置本地知识库检索，已降级为纯规则引擎：{IMPORT_ERROR}"}]
-    module, output_type = strategy_params(strategy)
-    payload = unified_search(
-        query=query,
-        top_k=top_k,
-        domain="all",
-        include_customer=True,
-        timeout=25,
-        scenario="presales",
-        module=module,
-        output_type=output_type,
-        normalize="raw",
-        per_source_k=max(top_k, 10),
-    )
-    evs: list[Evidence] = []
-    for r in payload.get("results", []):
-        score = float(r.get("rank_score") or 0)
-        # Keep low-score items as background evidence but final synthesis will mark weak.
-        evs.append(Evidence(
-            strategy=strategy,
-            title=sanitize_text(r.get("title") or "untitled"),
-            path=sanitize_filename(r.get("path") or ""),
-            snippet=sanitize_text((r.get("snippet") or "")[:260]),
-            score=score,
-            confidence=r.get("confidence") or "low",
-            source=f"{r.get('source')}/{r.get('collection')}",
-        ))
-    return evs, payload.get("errors", [])
+def extract_keywords(text: str) -> list[str]:
+    terms: list[str] = []
+    for t in re.findall(r"[\u4e00-\u9fffA-Za-z0-9%]+", text):
+        if len(t) >= 2 and t not in STOPWORDS:
+            terms.append(t)
+    hints = ["价格", "预算", "功能", "CTO", "换人", "业务部门", "技术团队", "POC", "性能", "报价", "审批", "决策链", "价值"]
+    for h in hints:
+        if h.lower() in text.lower():
+            terms.append(h)
+    return list(dict.fromkeys(terms))[:12]
 
 
-def source_line(e: Evidence) -> str:
-    name = sanitize_text(e.title) or sanitize_filename(e.path) or e.source
-    location = sanitize_filename(e.path) or e.source
-    return f"{name}（{location}，score={e.score:.2f}）"
+def industry_rules(industry: str) -> dict[str, Any]:
+    profiles = {
+        "零售": {
+            "risks": ["ROI敏感", "上线速度敏感", "库存/会员/门店场景要求强"],
+            "advice": "用门店效率、库存周转、复购提升三类指标包装价值，避免只讲功能。",
+        },
+        "金融": {
+            "risks": ["合规敏感", "安全背书敏感", "决策链长"],
+            "advice": "优先准备安全合规、审计、稳定性和同业背书材料。",
+        },
+        "制造": {
+            "risks": ["现场落地敏感", "系统集成复杂", "停线风险高"],
+            "advice": "用试点产线、设备/ERP/MES接口清单和停机风险预案降低顾虑。",
+        },
+        "政务": {
+            "risks": ["流程合规敏感", "多部门协调", "预算审批慢"],
+            "advice": "把方案拆成政策依据、审批路径、数据共享边界和阶段验收。",
+        },
+        "能源": {
+            "risks": ["安全生产敏感", "资产分散", "运维成本压力"],
+            "advice": "围绕安全、巡检效率、能耗与运维成本做价值量化。",
+        },
+    }
+    for key, profile in profiles.items():
+        if key in industry:
+            return profile
+    return {"risks": ["价值量化不足", "决策链不清", "落地路径不明确"], "advice": "先补行业场景、关键指标和分阶段落地路径。"}
 
 
-def evidence_key(e: Evidence) -> str:
-    return e.path or e.title or e.source
+def infer_causes(inp: WinLossInput) -> list[RuleCause]:
+    event = sanitize_text(inp.event)
+    stage = sanitize_text(inp.stage)
+    industry = sanitize_text(inp.industry)
+    competitor = sanitize_text(inp.competitor)
+    profile = industry_rules(industry)
+    causes: list[RuleCause] = []
 
+    def add(name: str, prob: int, diagnosis: str, basis: str, signals: list[str], actions: list[str]) -> None:
+        causes.append(RuleCause(name, prob, diagnosis, basis, signals, actions))
 
-def dedupe_evidence(rows: list[Evidence], limit: int = 3) -> list[Evidence]:
-    best: dict[str, Evidence] = {}
-    for e in rows:
-        key = evidence_key(e)
-        old = best.get(key)
-        if old is None or e.score > old.score:
-            best[key] = e
-    return sorted(best.values(), key=lambda x: x.score, reverse=True)[:limit]
-
-
-def independent_source_count(evidence: list[Evidence]) -> int:
-    return len({evidence_key(e) for e in evidence})
-
-
-def best_evidence(evidence: list[Evidence], *needles: str, min_score: float = 0.55) -> list[Evidence]:
-    ns = [n.lower() for n in needles if n]
-    out = []
-    for e in evidence:
-        hay = (e.title + " " + e.path + " " + e.snippet + " " + e.strategy).lower()
-        if e.score >= min_score and (not ns or any(n in hay for n in ns)):
-            out.append(e)
-    return dedupe_evidence(out, limit=3)
-
-
-def infer_causes(inp: WinLossInput, evidence: list[Evidence]) -> list[dict[str, Any]]:
-    event = inp.event
-    causes: list[dict[str, Any]] = []
-
-    def add(name: str, diag: str, ev: list[Evidence], base_prob: int, actions: list[str]):
-        supported = bool(ev)
-        causes.append({
-            "name": name,
-            "prob": base_prob if supported else None,
-            "prob_text": f"概率 {base_prob}%" if supported else "需要更多事实方可量化概率",
-            "supported": supported,
-            "diagnosis": diag if supported else f"待验证：{diag}",
-            "evidence": ev,
-            "actions": actions,
-        })
-
-    price_words = ["价格", "报价", "预算", "高", "便宜", "成本"]
-    if any(w in event or w in inp.stage for w in price_words):
-        ev = best_evidence(evidence, "价格", "报价", "预算", "框架价格", min_score=0.50)
+    price_words = ["价格", "报价", "预算", "高", "便宜", "成本", "贵", "降价"]
+    if has_any(event + stage, price_words):
         add(
             "价格竞争力/价值包装不足",
-            "客户已把决策锚点拉到价格与预算，若价值差异没有被量化成业务收益，功能更全也会被视为溢价。",
-            ev, 82,
-            ["把功能差异翻译成节省成本/提升收入/降低风险的量化账。", "报价前准备可降配版本、分阶段采购和ROI对照表。"]
+            82,
+            "客户把决策锚点拉到价格与预算；如果价值差异没有被量化成业务收益，功能更全也会被视为溢价。",
+            f"行业[{industry}]+阶段[{stage}]+事件[价格/预算触发] → 价格竞争力风险",
+            ["客户明确比较价格或预算", "报价谈判阶段仍未形成价值共识", *profile["risks"][:1]],
+            ["把功能差异翻译成节省成本/提升收入/降低风险的量化账。", "报价前准备可降配版本、分阶段采购和ROI对照表。"],
         )
 
-    if inp.competitor and inp.competitor not in {"无", "略", "未知"}:
-        ev = best_evidence(evidence, inp.competitor, "竞品", "厂商", min_score=0.50)
+    if competitor and competitor not in {"无", "略", "未知", "未提供"}:
         add(
             "竞品打法未被拆解",
-            "需要区分输在价格、性能、品牌背书还是客户关系；否则反制动作容易失焦。",
-            ev, 68,
-            ["补一页竞品对照：客户关心项、竞品承诺、我方反证材料。", "下次POC/方案阶段提前设置客户认可的评分表。"]
+            72,
+            "竞品进入客户比较框架后，需要区分输在价格、性能、品牌背书还是客户关系；否则反制动作容易失焦。",
+            f"行业[{industry}]+阶段[{stage}]+竞品[{competitor}] → 竞争对标风险",
+            ["客户提及明确竞品", "我方优势未转成客户评分项", "缺少竞品承诺反证材料"],
+            ["补一页竞品对照：客户关心项、竞品承诺、我方反证材料。", "下次POC/方案阶段提前设置客户认可的评分表。"],
         )
 
-    if any(w in event for w in ["换", "CTO", "业务部门", "技术团队", "重新评估", "风向"]):
-        ev = best_evidence(evidence, "决策", "关键人", "部门", "业务", "CTO", min_score=0.50)
+    if has_any(event, ["换", "CTO", "CIO", "业务部门", "技术团队", "重新评估", "风向", "领导", "拍板"]):
         add(
             "决策链/关键人风险",
+            78,
             "关键人或部门偏好变化会让原有共识失效，单线推进时风险暴露较晚。",
-            ev, 78,
-            ["从第一轮开始画决策链：使用者/技术评审/预算方/拍板人/反对者。", "关键节点要形成多角色共识材料，而不是只维护单一支持者。"]
+            f"行业[{industry}]+事件[关键人/部门变化] → 决策链风险",
+            ["关键人变更或新增评审方", "业务/技术/预算多方目标不一致", "原支持者无法代表最终决策"],
+            ["从第一轮开始画决策链：使用者/技术评审/预算方/拍板人/反对者。", "关键节点形成多角色共识材料，而不是只维护单一支持者。"],
         )
 
-    stage_ev = best_evidence(evidence, inp.stage, "商机", "售前", "报价", "方案", "POC", min_score=0.50)
+    if has_any(event + stage, ["POC", "试点", "测试", "性能", "接口", "集成", "演示", "demo"]):
+        add(
+            "POC/技术验证控制不足",
+            70,
+            "客户进入验证环节后，胜负手通常不是功能数量，而是验收标准、测试数据和关键场景覆盖度。",
+            f"行业[{industry}]+阶段[{stage}]+事件[POC/验证触发] → 技术验证风险",
+            ["POC标准不清", "测试场景未覆盖客户最关心问题", "技术结果没有转成业务结论"],
+            ["POC前锁定评分表、样例数据、验收口径和失败兜底。", "把POC结果翻译成业务收益和上线风险清单。"],
+        )
+
+    stage_prob = 64 if has_any(stage, ["报价", "谈判", "合同", "POC", "方案"]) else 58
     add(
-        f"{inp.stage}阶段控制点不足",
-        f"丢单发生在{inp.stage}，说明上一阶段进入该节点前，客户评价标准、预算边界或胜负手可能没有锁定。",
-        stage_ev, 60,
-        ["进入下一阶段前做Go/No-Go检查：预算、决策人、评分标准、竞品位置。", "把阶段风险前置为销售检查清单。"]
+        f"{stage}阶段控制点不足",
+        stage_prob,
+        f"丢单发生在{stage}，说明上一阶段进入该节点前，客户评价标准、预算边界或胜负手可能没有锁定。",
+        f"行业[{industry}]+阶段[{stage}] → 阶段推进控制风险",
+        ["阶段进入条件不完整", "预算/决策人/评分标准未锁定", profile["advice"]],
+        ["进入下一阶段前做Go/No-Go检查：预算、决策人、评分标准、竞品位置。", "把阶段风险前置为销售检查清单。"],
     )
 
     if not causes:
-        ev = sorted([e for e in evidence if e.score >= 0.55], key=lambda x: x.score, reverse=True)[:3]
-        add("证据不足的综合判断", "当前输入缺少可稳定归因的触发词，需要补充预算、决策链、竞品承诺和内部反对意见。", ev, 45, ["补充客户最终选择理由。", "补充关键会议纪要或客户原话。"])
+        add(
+            "事实不足的综合判断",
+            45,
+            "当前输入缺少可稳定归因的触发词，需要补充预算、决策链、竞品承诺和内部反对意见。",
+            f"行业[{industry}]+阶段[{stage}]+事件关键词[{','.join(extract_keywords(event)) or '不足'}] → 信息不足风险",
+            ["关键事件描述过短", "缺少客户最终选择理由", "缺少关键会议纪要或客户原话"],
+            ["补充客户最终选择理由。", "补充关键会议纪要或客户原话。"],
+        )
 
-    causes.sort(key=lambda c: c["prob"] or 0, reverse=True)
+    causes.sort(key=lambda c: c.prob, reverse=True)
     return causes[:3]
 
 
-def collect_evidence(inp: WinLossInput) -> tuple[dict[str, list[Evidence]], list[dict[str, str]]]:
-    keywords = " ".join(extract_keywords(inp.event))
-    queries = {
-        "行业模式匹配": f"{inp.industry} 行业 ToB 项目 售前 方案 痛点 成功案例 客户需求",
-        "竞品模式匹配": f"{inp.competitor} 竞品 分析 优势 劣势 定价 打法 反制" if inp.competitor and inp.competitor not in {"无", "略"} else f"{inp.industry} 竞品 价格 功能 预算 售前",
-        "阶段风险匹配": f"{inp.stage} 阶段 商机 售前 报价 POC 合同 里程碑 风险 丢单",
-        "关键词匹配": f"{inp.event} {keywords}",
-        "综合推理补充": f"丢单 复盘 {inp.industry} {inp.size} {inp.stage} {inp.competitor} {keywords} 改进建议",
-    }
-    all_errors: list[dict[str, str]] = []
-    bucket: dict[str, list[Evidence]] = {}
-    for strategy, q in queries.items():
-        try:
-            evs, errs = run_search(strategy, q, top_k=5)
-        except Exception as e:
-            evs, errs = [], [{"type": "search_failed", "strategy": strategy, "message": f"知识库检索失败，已降级：{e}"}]
-        bucket[strategy] = evs
-        all_errors.extend(errs)
-    return bucket, all_errors
-
-
-def render_report(inp: WinLossInput, buckets: dict[str, list[Evidence]], errors: list[dict[str, str]]) -> str:
-    evidence = [e for rows in buckets.values() for e in rows]
-    causes = infer_causes(inp, evidence)
-    strong = [e for e in evidence if e.score >= 0.62]
-    unique_sources = independent_source_count(evidence)
+def render_report(inp: WinLossInput) -> str:
+    safe = WinLossInput(**{k: sanitize_text(str(v)) for k, v in asdict(inp).items()})
+    causes = infer_causes(safe)
+    labels = ["🔴 核心原因", "🟡 辅助原因", "🟢 潜在风险"]
 
     lines: list[str] = []
     lines.append("📉 丢单复盘报告")
     lines.append("")
     lines.append("【项目画像】")
-    lines.append(f"行业: {sanitize_text(inp.industry)} | 规模: {sanitize_text(inp.size)} | 跟进: {sanitize_text(inp.duration)}")
-    lines.append(f"丢单阶段: {sanitize_text(inp.stage)} | 竞品: {sanitize_text(inp.competitor) or '未提供'}" + (f" | 金额: {sanitize_text(inp.amount)}" if inp.amount else ""))
-    lines.append(f"关键事件: {sanitize_text(inp.event)}")
-    lines.append("")
-    lines.append("【知识库检索概况】")
-    for k, rows in buckets.items():
-        deduped = dedupe_evidence(rows, limit=len(rows))
-        top = deduped[0] if deduped else None
-        if top:
-            lines.append(f"- {k}: {len(deduped)}份独立来源，Top={top.title}（score={top.score:.2f}）")
-        else:
-            lines.append(f"- {k}: 0条，待补充知识库证据")
-    if unique_sources <= 2:
-        lines.append("- ⚠️ 5路检索仅命中≤2份独立文档：本次证据同质化，结论需降权，建议补充更多项目事实或扩展知识库。")
-    if errors:
-        lines.append(f"- 检索告警: {len(errors)}项（不影响已有证据，但需排查：{errors[:2]}）")
+    lines.append(f"行业: {safe.industry} | 规模: {safe.size} | 跟进: {safe.duration}")
+    lines.append(f"丢单阶段: {safe.stage} | 竞品: {safe.competitor or '未提供'}" + (f" | 金额: {safe.amount}" if safe.amount else ""))
+    lines.append(f"关键事件: {safe.event}")
     lines.append("")
 
-    labels = ["🔴 核心原因", "🟡 辅助原因", "🟢 潜在风险"]
     lines.append("【根因分析（按概率排序）】")
     for idx, c in enumerate(causes):
-        lines.append(f"{idx+1}. {labels[min(idx, 2)]}：{c['name']}（{c['prob_text']}）")
-        lines.append(f"   - 诊断：{c['diagnosis']}")
-        if c["evidence"]:
-            for ev in c["evidence"][:2]:
-                lines.append(f"   - 证据来自：{source_line(ev)}")
-        else:
-            lines.append("   - 证据来自：待验证（当前知识库未检出足够相似来源，不能当作确定结论）")
+        lines.append(f"{idx + 1}. {labels[min(idx, 2)]}：{c.name}（概率 {c.prob}%）")
+        lines.append(f"   - 诊断：{c.diagnosis}")
+        lines.append(f"   - 规则依据：{c.rule_basis}")
         lines.append("")
 
     lines.append("【风险信号对照】")
-    signal_count = 0
     for c in causes:
-        evn = c["evidence"]
-        if evn:
-            signal_count += 1
-            lines.append(f"- ☑️ {c['name']}：已有相似资料支撑（独立来源数：{independent_source_count(evn)}）")
-        else:
-            lines.append(f"- ☐ {c['name']}：待验证（建议补充客户原话/会议纪要/竞品承诺）")
-    if signal_count == 0:
-        lines.append("- ☐ 本次匹配偏弱：不能给确定风险概率，建议补充更多事实后复跑。")
+        lines.append(f"- ☑️ {c.name}：规则触发（{c.rule_basis}）")
+        for signal in c.signals[:3]:
+            lines.append(f"  - {signal}")
     lines.append("")
 
     lines.append("【改进建议】")
     lines.append("如果重来一次：")
-    short = []
-    mid = []
+    short: list[str] = []
+    mid: list[str] = []
     for c in causes:
-        short.extend(c["actions"][:1])
-        mid.extend(c["actions"][1:2])
+        short.extend(c.actions[:1])
+        mid.extend(c.actions[1:2])
     short_unique = list(dict.fromkeys(short))[:3]
     mid_unique = list(dict.fromkeys(mid))[:3]
     lines.append("- 短期（下次遇到类似情况）：" + "；".join(short_unique))
     lines.append("- 中期（提升能力/方法）：" + "；".join(mid_unique or ["沉淀行业/竞品/阶段风险检查清单，把复盘结论转成售前动作。"]))
-    lines.append("- 长期（体系化）：建立丢单案例库字段：行业、阶段、竞品、关键事件、最终原因、证据链接、下次反制动作。")
-    lines.append("")
-    if len(strong) < 3:
-        lines.append("【置信度说明】")
-        lines.append("本次强匹配证据不足3条，部分建议已降权；未被知识库支撑的判断均标为「待验证」。")
+    lines.append("- 长期（体系化）：建立丢单案例库字段：行业、阶段、竞品、关键事件、最终原因、规则触发、下次反制动作。")
     return "\n".join(lines)
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="ToB销售丢单复盘助手")
+    ap = argparse.ArgumentParser(description="ToB销售丢单复盘助手（纯规则引擎）")
     ap.add_argument("--industry")
     ap.add_argument("--size")
     ap.add_argument("--duration")
@@ -349,18 +257,15 @@ def main() -> int:
         event=prompt_if_missing(args.event, "关键事件"),
         amount=args.amount or "",
     )
-    try:
-        buckets, errors = collect_evidence(inp)
-    except Exception as e:
-        print(f"[blocked] 知识库查询失败：{e}", file=sys.stderr)
-        return 2
 
     if args.json:
         safe_input = {k: sanitize_text(str(v)) for k, v in asdict(inp).items()}
-        print(json.dumps({"input": safe_input, "evidence": {k: [asdict(e) for e in v] for k, v in buckets.items()}, "errors": errors}, ensure_ascii=False, indent=2))
+        safe_inp = WinLossInput(**safe_input)
+        print(json.dumps({"input": safe_input, "causes": [asdict(c) for c in infer_causes(safe_inp)]}, ensure_ascii=False, indent=2))
     else:
-        print(render_report(inp, buckets, errors))
+        print(render_report(inp))
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
