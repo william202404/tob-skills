@@ -117,7 +117,7 @@
         <div class="card"><strong>行业趋势</strong><ul>{{#each industryInsight.trends}}<li>{{this}}</li>{{/each}}</ul></div>
       </div>
       <h3>行业共性挑战</h3>
-      <div class="grid">{{#each industryInsight.challenges}}<div class="card"><strong>{{this}}</strong><br>影响业务效率、成本控制与竞争力，需要用可落地的数字化能力逐步拆解。</div>{{/each}}</div>
+      <div class="grid">{{#each industryInsight.challenges}}<div class="card"><strong>{{name}}</strong><br>{{desc}}</div>{{/each}}</div>
       {{#if painpoints}}<h3>客户特定痛点翻译</h3><ul>{{#each (split painpoints ',')}}<li><strong>{{this}}</strong> → 转化为可定义、可度量、可验收的业务改进目标。</li>{{/each}}</ul>{{/if}}
       <h3>数字化机会</h3><ul>{{#each industryInsight.opportunities}}<li>{{this}}</li>{{/each}}</ul>
     </section>
