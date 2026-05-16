@@ -1,6 +1,6 @@
 {
   "name": "tob-sales-proposal",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ToB\u9500\u552e\u63d0\u6848\u751f\u6210\u5668 - \u57fa\u4e8e19\u5e74\u5b9e\u6218\u7ecf\u9a8c",
   "main": "src/index.js",
   "bin": {

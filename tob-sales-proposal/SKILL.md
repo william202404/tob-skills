@@ -1,6 +1,6 @@
 ---
 name: tob-sales-proposal
-description: ToB销售提案生成器。输入客户信息/行业/痛点/产品，基于知识库真实案例输出4模块高转化提案框架。
+description: ToB销售提案生成器。输入客户信息/行业/痛点/产品，基于知识库真实案例输出带品牌色CSS的4模块HTML分页提案。
 priority: high
 source: experience-backed
 workers: Sales, PM
@@ -8,11 +8,11 @@ created: 2026-05-16
 tags: [tob, sales, proposal, b2b, presales]
 ---
 
-# tob-sales-proposal — 提案提纲生成器
+# tob-sales-proposal — HTML 提案生成器
 
-> 把客户信息变成有知识库案例支撑的提案提纲。
+> 把客户信息变成有知识库案例支撑的 HTML 提案页面。
 
-基于知识库匹配过往相似项目，输出4模块提案框架——不堆方法论，只讲客户能信的东西。
+基于知识库匹配过往相似项目，输出带品牌色/CSS的4模块分页提案——不堆方法论，只讲客户能信的东西。
 
 ## 使用方式
 
@@ -24,26 +24,21 @@ tob-sales-proposal
 tob-sales-proposal --quick --client "某连锁便利店" --industry "零售" \
   --painpoints "库存不准,会员流失" --budget "150万"
 
-# 带丢单复盘关联（新提案自动避坑）
-tob-sales-proposal --quick --ref-deal "rec_xxx" --client "某便利店" --industry "零售" \
-  --painpoints "库存不准,会员流失"
 ```
 
 输入：客户名 / 行业 / 痛点（最多5个，逗号分隔）/ 预算 / 决策周期
 
 ## 输出4模块
 
-输出为 Markdown 格式，每模块包含：**客户输入摘要 → 知识库匹配案例引用 → 模块正文**。
+输出为 HTML 格式，带品牌色/CSS和分页导航。每模块包含：**客户输入摘要 → 知识库匹配案例引用 → 模块正文**。页面底部固定提示：复制内容给 AI 生成 PPT。
 
 示例（痛点对齐模块）：
-```markdown
-## 模块1：痛点对齐
-客户输入：零售行业，库存不准，会员流失
-匹配案例：某连锁便利店（50家门店）→ 库存准确率65%→93%，6周
-
-### 行业共性痛点
-1. 库存不准 → 影响补货决策和订单满足率
-2. 会员流失 → 缺乏精准营销手段，复购率低
+```html
+<section class="page" id="page-1">
+  <h2>痛点对齐：让客户觉得你懂他</h2>
+  <p>客户输入：零售行业，库存不准，会员流失</p>
+  <p>匹配案例：某连锁便利店（50家门店）→ 库存准确率65%→93%，6周</p>
+</section>
 ```
 
 ### 1. 痛点对齐（让客户觉得你懂他）
@@ -88,10 +83,9 @@ tob-sales-proposal --quick --ref-deal "rec_xxx" --client "某便利店" --indust
 
 - 新提案前跑一遍 `tob-win-loss-review`（丢单复盘），避开之前踩的坑
 - 成功提案交付后跑一遍 `tob-win-loss-review` 复盘，沉淀到知识库
-- 关联复盘ID：`tob-sales-proposal --ref-deal <丢单复盘ID>`
 
 ## 注意事项
 
-- 输出课题纲，不是完整文档。具体内容需人工适配填充
+- 输出 HTML 提案页面，不再输出 Markdown。具体内容仍需人工适配填充
 - 案例引用标注来源，不编造。知识库未覆盖时不强推
 - 敏感信息自动脱敏

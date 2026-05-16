@@ -15,6 +15,10 @@ class ProposalGenerator {
   }
 
   async generate() {
+    if (typeof this.config.painpoints === 'string' && this.config.painpoints.trim() === '') {
+      this.config.painpoints = undefined;
+    }
+
     // 加载数据
     const cases = await this.loadCases();
     const methodologies = await this.loadMethodologies();
@@ -38,8 +42,8 @@ class ProposalGenerator {
       roi: this.generateROI()
     };
 
-    // 渲染模板
-    const templatePath = path.join(this.templateDir, 'proposal.md.hbs');
+    // 渲染 HTML 模板
+    const templatePath = path.join(this.templateDir, 'proposal.html.hbs');
     const templateContent = await fs.readFile(templatePath, 'utf-8');
     const template = Handlebars.compile(templateContent);
     
@@ -75,7 +79,7 @@ class ProposalGenerator {
       if (c.industry && c.industry.includes(industry)) return true;
       // 关键词匹配
       if (this.config.painpoints) {
-        const pains = this.config.painpoints.split(',').map(p => p.trim());
+        const pains = this.config.painpoints.split(',').map(p => p.trim()).filter(Boolean);
         return pains.some(pain => 
           JSON.stringify(c).includes(pain)
         );

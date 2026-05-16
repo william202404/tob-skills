@@ -12,7 +12,7 @@ const program = new Command();
 program
   .name('tob-sales-proposal')
   .description('ToB销售提案生成器 - 基于19年实战经验')
-  .version('1.0.0');
+  .version('1.1.0');
 
 program
   .option('-c, --client <name>', '客户名称')
@@ -22,8 +22,9 @@ program
   .option('-b, --budget <range>', '预算范围')
   .option('-t, --timeline <duration>', '项目周期')
   .option('-r, --rfp <path>', 'RFP文件路径')
-  .option('-o, --output <path>', '输出文件路径', './proposal.md')
-  .option('-f, --format <format>', '输出格式：md/docx/pdf', 'md')
+  .option('--quick', '快速模式（保留兼容，使用命令行参数直接生成）', false)
+  .option('-o, --output <path>', '输出文件路径', './proposal.html')
+  .option('-f, --format <format>', '输出格式：html', 'html')
   .option('--interactive', '交互模式', false)
   .action(async (options) => {
     try {
@@ -51,7 +52,8 @@ program
       await fs.writeFile(config.output, proposal);
       
       console.log(chalk.green(`✅ 提案已生成: ${path.resolve(config.output)}`));
-      console.log(chalk.gray(`📊 包含模块: 客户洞察、解决方案、ROI分析、成功案例、实施计划`));
+      console.log(chalk.gray(`📊 包含分页: 痛点对齐、方案对齐、实施路径、ROI与案例`));
+      console.log(chalk.gray(`💡 页面底部已加入“复制内容给 AI 生成 PPT”提示`));
       
     } catch (error) {
       console.error(chalk.red('❌ 生成失败:', error.message));
@@ -112,7 +114,7 @@ async function runInteractive() {
       type: 'input',
       name: 'output',
       message: '输出文件路径:',
-      default: './proposal.md'
+      default: './proposal.html'
     }
   ]);
 
