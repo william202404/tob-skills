@@ -39,7 +39,9 @@ class ProposalGenerator {
       // 生成实施计划
       implementation: this.generateImplementationPlan(),
       // 生成ROI分析
-      roi: this.generateROI()
+      roi: this.generateROI(),
+      // 带差异化的痛点翻译
+      painTranslated: this.translatePainpoints(this.config.painpoints)
     };
 
     // 渲染 HTML 模板
@@ -147,52 +149,95 @@ class ProposalGenerator {
     const solutions = {
       '智能客服系统': {
         core: '全渠道智能客服平台',
-        features: ['多渠道接入', '智能路由', '知识库管理', '数据分析'],
+        features: [
+          { name: '多渠道接入', desc: '整合电话/在线/小程序/APP全渠道，统一工单队列，客户一次接入、全程追溯' },
+          { name: '智能路由', desc: '基于意图识别+技能标签自动派单，关键客户优先接入，平均响应时间缩短70%' },
+          { name: '知识库管理', desc: 'FAQ+文档+工单沉淀闭环，AI辅助坐席实时推荐答案，新人上手周期从3周缩至3天' },
+          { name: '数据分析', desc: '热力图+情绪监测+质检评分一体化，服务漏洞自动预警，客诉率可追踪可归因' }
+        ],
         value: '提升客服效率50%+，降低人力成本30%'
       },
       'RAG知识库': {
         core: '企业级智能知识库系统',
-        features: ['文档智能解析', '语义搜索', '问答机器人', '知识图谱'],
+        features: [
+          { name: '文档智能解析', desc: 'PDF/Word/网页多格式自动解析、切片、向量化，知识入库零人工干预' },
+          { name: '语义搜索', desc: '基于RAG+混合检索，模糊问题也能精准命中，知识检索准确率提升40%+' },
+          { name: '问答机器人', desc: '对接飞书/企微/钉钉，员工问一句即答，减少"知识找不到"导致的重复咨询' },
+          { name: '知识图谱', desc: '实体关系自动抽取，知识关联可视化展现，辅助发现隐藏的业务逻辑连接' }
+        ],
         value: '知识检索准确率提升40%，响应时间缩短80%'
       },
       'CRM系统': {
         core: '客户关系管理平台',
-        features: ['客户360视图', '销售漏斗', '自动化营销', '数据分析'],
+        features: [
+          { name: '客户360视图', desc: '打通交易/服务/营销数据，单客户全生命周期画像，告别多系统来回跳转' },
+          { name: '销售漏斗', desc: '可视化商机阶段管理，自动标注卡点线索，预测成交概率准确率达85%+' },
+          { name: '自动化营销', desc: '基于行为和标签的自动触达策略，沉默客户自动召回，MA活动执行效率提升10倍' },
+          { name: '数据分析', desc: '多维度销售看板+客户分群+流失预警，用数据驱动而非经验驱动决策' }
+        ],
         value: '销售转化率提升25%，客户留存率提升20%'
       },
       '供应链管理系统': {
         core: '端到端供应链协同平台',
-        features: ['供应商协同', '智能排产', '库存优化', '物流追踪'],
+        features: [
+          { name: '供应商协同', desc: '采购订单在线协同+交期自动预警+对账自动化，采购端沟通成本降低60%' },
+          { name: '智能排产', desc: '基于订单优先级+产能约束+物料齐套的自动排程，排产耗时从天级缩至分钟级' },
+          { name: '库存优化', desc: 'ABC分类+安全库存自动计算+滞销品预警，库存周转率提升30%、呆滞库存减少25%' },
+          { name: '物流追踪', desc: 'TMS集成+轨迹可视化+签收电子化，终端配送全链路透明，异常自动升级处理' }
+        ],
         value: '库存周转提升30%，交付准时率提升至95%+'
       }
     };
 
     return solutions[this.config.product] || {
       core: `${this.config.product}解决方案`,
-      features: ['定制化功能', '系统集成', '数据安全', '持续运维'],
+      features: [
+        { name: '定制化功能', desc: '按业务需求灵活配置功能模块，避免通用方案与真实场景的割裂' },
+        { name: '系统集成', desc: '开放API+标准接口，快速对接客户现有系统，数据不搬家也能跑' },
+        { name: '数据安全', desc: '多层权限管控+操作审计+数据加密，通过等保三级认证' },
+        { name: '持续运维', desc: '7×12h在线支持+季度业务复盘+持续迭代，系统上线不是终点而是起点' }
+      ],
       value: '提升业务效率，降低运营成本'
     };
+  }
+
+  translatePainpoints(painpointsStr) {
+    if (!painpointsStr || painpointsStr.trim() === '') return [];
+    const patterns = [
+      '转化为可量化验收的业务改进目标，纳入项目KPI体系',
+      '从"说不清"到"可度量"：设定基线值、目标值、验收标准',
+      '拆解为具体场景——当前效率、期望效率、差距量化',
+      '对标行业最佳实践，识别改进空间和优先动作',
+      '映射到系统功能模块，确保每个痛点有明确的产品落点'
+    ];
+    return painpointsStr.split(',').map((p, i) => ({
+      pain: p.trim(),
+      translation: patterns[i % patterns.length]
+    })).filter(p => p.pain);
   }
 
   generateImplementationPlan() {
     const timeline = this.config.timeline || '3个月';
     const months = parseInt(timeline) || 3;
+    const totalWeeks = months * 4;  // 转周计算
+    const week1 = Math.ceil(totalWeeks * 0.3);
+    const week2 = Math.ceil(totalWeeks * 0.7);
     
     return {
       phases: [
         {
           name: '第一阶段：需求确认与方案设计',
-          duration: `第1-${Math.ceil(months * 0.3)}周`,
+          duration: `第1-${week1}周`,
           tasks: ['业务调研', '需求确认', '方案设计', '原型确认']
         },
         {
           name: '第二阶段：系统开发与测试',
-          duration: `第${Math.ceil(months * 0.3) + 1}-${Math.ceil(months * 0.7)}周`,
+          duration: `第${week1 + 1}-${week2}周`,
           tasks: ['系统开发', '接口对接', '功能测试', '用户验收']
         },
         {
           name: '第三阶段：上线部署与培训',
-          duration: `第${Math.ceil(months * 0.7) + 1}-${months}周`,
+          duration: `第${week2 + 1}-${totalWeeks}周`,
           tasks: ['生产部署', '数据迁移', '用户培训', '上线支持']
         }
       ]
@@ -201,14 +246,20 @@ class ProposalGenerator {
 
   generateROI() {
     const budget = this.config.budget || '50-100万';
-    // 简单解析预算范围
-    const budgetMatch = budget.match(/(\d+).*?(\d+)/);
-    const minBudget = budgetMatch ? parseInt(budgetMatch[1]) : 50;
-    const maxBudget = budgetMatch ? parseInt(budgetMatch[2]) : 100;
+    // 解析预算：支持 "80-120万"（区间）和 "150万"（单值）
+    const budgetMatch = budget.match(/(\d+)\s*(?:-\s*(\d+))?\s*万/);
+    let minBudget, maxBudget;
+    if (budgetMatch) {
+      minBudget = parseInt(budgetMatch[1]);
+      maxBudget = budgetMatch[2] ? parseInt(budgetMatch[2]) : Math.round(minBudget * 1.2);
+    } else {
+      minBudget = 50;
+      maxBudget = 100;
+    }
     const avgBudget = (minBudget + maxBudget) / 2;
 
     return {
-      investment: `${minBudget}-${maxBudget}万元`,
+      investment: minBudget === maxBudget ? `${minBudget}万元` : `${minBudget}-${maxBudget}万元`,
       benefits: [
         { item: '人力成本节约', value: `${Math.round(avgBudget * 0.3)}万元/年`, desc: '自动化替代重复工作' },
         { item: '效率提升收益', value: `${Math.round(avgBudget * 0.5)}万元/年`, desc: '流程优化带来效率提升' },
