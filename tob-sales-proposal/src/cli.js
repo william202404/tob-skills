@@ -12,7 +12,7 @@ const program = new Command();
 program
   .name('tob-sales-proposal')
   .description('ToB销售提案生成器 - 基于19年实战经验')
-  .version('1.1.0');
+  .version('1.2.0');
 
 program
   .option('-c, --client <name>', '客户名称')

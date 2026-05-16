@@ -23,6 +23,7 @@ else:
     IMPORT_ERROR = None
 
 STOPWORDS = set("客户 我们 对方 竞品 虽然 但是 因为 所以 一个 这个 那个 阶段 有限 表现 更好 倾向 重新 评估".split())
+PRIVATE_NAME_TOKENS = {"李宁", "李寧", "lining", "william"}
 
 @dataclass
 class WinLossInput:
@@ -65,6 +66,35 @@ def extract_keywords(text: str) -> list[str]:
             terms.append(h)
     return list(dict.fromkeys(terms))[:12]
 
+def sanitize_filename(name: str) -> str:
+    """Show only a safe basename and strip personal-name tokens from filenames."""
+    if not name:
+        return ""
+    base = Path(str(name)).name
+    for token in PRIVATE_NAME_TOKENS:
+        base = re.sub(re.escape(token), "", base, flags=re.IGNORECASE)
+    base = re.sub(r"[-_—–\s]+(?=\.)", "", base)
+    base = re.sub(r"^[-_—–\s]+|[-_—–\s]+$", "", base)
+    return base or "已脱敏文件"
+
+
+def sanitize_text(text: str) -> str:
+    """Remove local absolute paths and personal filename tokens from output text."""
+    if not text:
+        return ""
+
+    def repl(m: re.Match[str]) -> str:
+        return sanitize_filename(m.group(0))
+
+    # macOS/Linux absolute paths: keep only basename. First handle paths with spaces up to common file extensions.
+    text = re.sub(r"/(?:Users|Volumes|private|tmp|var)/[^，。；：、（）()<>\[\]{}'\"]+?\.(?:pptx?|docx?|xlsx?|pdf|md|txt|xmind|html?)", repl, str(text), flags=re.IGNORECASE)
+    text = re.sub(r"/(?:Users|Volumes|private|tmp|var)/[^\s，。；：、（）()<>\[\]{}'\"]+", repl, text)
+    # Windows absolute paths just in case.
+    text = re.sub(r"[A-Za-z]:\\[^\s，。；：、（）()<>\[\]{}'\"]+", repl, text)
+    for token in PRIVATE_NAME_TOKENS:
+        text = re.sub(re.escape(token), "", text, flags=re.IGNORECASE)
+    return text.strip()
+
 
 def strategy_params(strategy: str) -> tuple[str, str]:
     """Return narrow per-strategy retrieval hints to avoid all paths converging."""
@@ -81,7 +111,7 @@ def strategy_params(strategy: str) -> tuple[str, str]:
 
 def run_search(strategy: str, query: str, top_k: int = 5) -> tuple[list[Evidence], list[dict[str, str]]]:
     if unified_search is None:
-        raise RuntimeError(f"无法导入本地 unified_knowledge_search: {IMPORT_ERROR}")
+        return [], [{"type": "knowledge_unavailable", "message": f"未配置本地知识库检索，已降级为纯规则引擎：{IMPORT_ERROR}"}]
     module, output_type = strategy_params(strategy)
     payload = unified_search(
         query=query,
@@ -101,9 +131,9 @@ def run_search(strategy: str, query: str, top_k: int = 5) -> tuple[list[Evidence
         # Keep low-score items as background evidence but final synthesis will mark weak.
         evs.append(Evidence(
             strategy=strategy,
-            title=r.get("title") or "untitled",
-            path=r.get("path") or "",
-            snippet=(r.get("snippet") or "")[:260],
+            title=sanitize_text(r.get("title") or "untitled"),
+            path=sanitize_filename(r.get("path") or ""),
+            snippet=sanitize_text((r.get("snippet") or "")[:260]),
             score=score,
             confidence=r.get("confidence") or "low",
             source=f"{r.get('source')}/{r.get('collection')}",
@@ -112,8 +142,9 @@ def run_search(strategy: str, query: str, top_k: int = 5) -> tuple[list[Evidence
 
 
 def source_line(e: Evidence) -> str:
-    name = e.title or Path(e.path).name or e.source
-    return f"{name}（{e.path or e.source}，score={e.score:.2f}）"
+    name = sanitize_text(e.title) or sanitize_filename(e.path) or e.source
+    location = sanitize_filename(e.path) or e.source
+    return f"{name}（{location}，score={e.score:.2f}）"
 
 
 def evidence_key(e: Evidence) -> str:
@@ -216,7 +247,10 @@ def collect_evidence(inp: WinLossInput) -> tuple[dict[str, list[Evidence]], list
     all_errors: list[dict[str, str]] = []
     bucket: dict[str, list[Evidence]] = {}
     for strategy, q in queries.items():
-        evs, errs = run_search(strategy, q, top_k=5)
+        try:
+            evs, errs = run_search(strategy, q, top_k=5)
+        except Exception as e:
+            evs, errs = [], [{"type": "search_failed", "strategy": strategy, "message": f"知识库检索失败，已降级：{e}"}]
         bucket[strategy] = evs
         all_errors.extend(errs)
     return bucket, all_errors
@@ -232,9 +266,9 @@ def render_report(inp: WinLossInput, buckets: dict[str, list[Evidence]], errors:
     lines.append("📉 丢单复盘报告")
     lines.append("")
     lines.append("【项目画像】")
-    lines.append(f"行业: {inp.industry} | 规模: {inp.size} | 跟进: {inp.duration}")
-    lines.append(f"丢单阶段: {inp.stage} | 竞品: {inp.competitor or '未提供'}" + (f" | 金额: {inp.amount}" if inp.amount else ""))
-    lines.append(f"关键事件: {inp.event}")
+    lines.append(f"行业: {sanitize_text(inp.industry)} | 规模: {sanitize_text(inp.size)} | 跟进: {sanitize_text(inp.duration)}")
+    lines.append(f"丢单阶段: {sanitize_text(inp.stage)} | 竞品: {sanitize_text(inp.competitor) or '未提供'}" + (f" | 金额: {sanitize_text(inp.amount)}" if inp.amount else ""))
+    lines.append(f"关键事件: {sanitize_text(inp.event)}")
     lines.append("")
     lines.append("【知识库检索概况】")
     for k, rows in buckets.items():
@@ -322,7 +356,8 @@ def main() -> int:
         return 2
 
     if args.json:
-        print(json.dumps({"input": asdict(inp), "evidence": {k: [asdict(e) for e in v] for k, v in buckets.items()}, "errors": errors}, ensure_ascii=False, indent=2))
+        safe_input = {k: sanitize_text(str(v)) for k, v in asdict(inp).items()}
+        print(json.dumps({"input": safe_input, "evidence": {k: [asdict(e) for e in v] for k, v in buckets.items()}, "errors": errors}, ensure_ascii=False, indent=2))
     else:
         print(render_report(inp, buckets, errors))
     return 0

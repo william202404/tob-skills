@@ -1,6 +1,6 @@
 ---
 name: tob-win-loss-review
-description: ToB销售丢单复盘助手。输入行业/规模/阶段/竞品/关键事件，基于ChromaDB客户项目知识库输出带来源的根因分析、风险信号和改进建议。
+description: ToB销售丢单复盘助手。输入行业/规模/阶段/竞品/关键事件，优先基于本地知识库输出带来源复盘；知识库不可用时自动降级为纯规则引擎。
 priority: high
 source: tech-built
 workers: Tech, Sales, Checker
@@ -11,7 +11,7 @@ created: 2026-05-15
 
 ## 何时使用
 
-当用户需要复盘 ToB 销售丢单原因，尤其是需要结合李宁客户项目知识库、行业方案包、竞品/售前资料给出改进建议时使用。
+当用户需要复盘 ToB 销售丢单原因，尤其是需要结合客户项目知识库、行业方案包、竞品/售前资料给出改进建议时使用。
 
 ## 使用方式
 
@@ -41,7 +41,7 @@ tob-win-loss-review ... --json
 4. 关键词匹配：从关键事件抽取关键词后检索相似描述
 5. 综合推理：证据不足时降权，并明确标注「待验证」和补充问题
 
-底层使用 skill 内置的 `scripts/unified_knowledge_search.py`，通过 ChromaDB `PersistentClient + get()+NumPy cosine` 安全检索路径，避免直接使用 `collection.query()` 触发已知本地索引风险。为避免 5 路检索同质化，presales 扩展词已收窄，并在报告中统计独立来源数。
+底层优先使用 skill 内置的 `scripts/unified_knowledge_search.py`，通过 ChromaDB `PersistentClient + get()+NumPy cosine` 安全检索路径，避免直接使用 `collection.query()` 触发已知本地索引风险。为避免 5 路检索同质化，presales 扩展词已收窄，并在报告中统计独立来源数。若本地知识库不可用，则自动降级为纯规则引擎输出，并明确标注「待验证」。
 
 ## 输出约束
 
@@ -51,6 +51,7 @@ tob-win-loss-review ... --json
 
 ## 注意事项
 
-- 如果 Chroma/Ollama 不可用，输出阻断原因，不做无来源复盘。
+- 如果 Chroma/Ollama 不可用，自动降级为纯规则引擎，不崩溃；无来源判断必须标「待验证」。
+- 输出中的本地路径只展示文件名；文件名中的个人姓名/用户名自动脱敏。
 - 查询结果低于阈值时，不强行给确定结论。
 - 提交审查前至少跑 TC1。
