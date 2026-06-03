@@ -273,6 +273,10 @@ function interactiveMode() {
   })();
 }
 
-const args = parseArgs(process.argv);
-if (!args.symptom) interactiveMode();
-else console.log(generateCard(args));
+if (require.main === module) {
+  const args = parseArgs(process.argv);
+  if (!args.symptom) interactiveMode();
+  else console.log(generateCard(args));
+}
+
+module.exports = { detectRules: matchedRules, generateCard, matchedRules, parseArgs, requiredLogs };

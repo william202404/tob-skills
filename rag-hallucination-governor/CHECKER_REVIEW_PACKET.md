@@ -15,6 +15,9 @@ It should help an agent produce operational governance advice for hallucination 
 - `FIELD_SCENARIOS.md`: synthetic ToB delivery patterns.
 - `TEST_CASES.md`: smoke test inputs and expected checks.
 - `src/generator.js`: deterministic rule card generator.
+- `cli.js`: CLI entry.
+- `package.json`: npm metadata and test script.
+- `tests/run-tests.js`: deterministic smoke tests.
 
 ## Current Coverage
 
@@ -49,6 +52,7 @@ Tech fixes applied:
 - Added mixed-risk detection and additional risk type output.
 - Changed Self-Test example to a different symptom from Quick Mode.
 - Added rule-specific Required Logs.
+- Added package/CLI/test entry so the skill can be self-tested consistently.
 
 ## Review Questions
 
