@@ -6,10 +6,10 @@
 
 | Skill | 类型 | 状态 | 发布动作 |
 |-------|------|------|----------|
-| `rag-hallucination-governor` | RAG 可靠性治理 | 已开发 / 已自测 / 待发布 | 更新 ClawHub / SkillHub |
-| `tob-competitor-snip` | 竞品应对卡片 | 已开发 / 已自测 / 待发布 | 更新 ClawHub / SkillHub |
-| `tob-poc-war-room` | POC 战情室 | 已开发 / 已自测 / 质量审查通过 / 待发布 | 更新 ClawHub / SkillHub |
-| `poc-to-contract-closer` | POC 转签约 | 已开发 / 已自测 / 质量审查通过 / 待发布 | 首次注册 + 发布 ClawHub / SkillHub |
+| `rag-hallucination-governor` | RAG 可靠性治理 | 已开发 / 已自测 / ClawHub 已发布 / 待发布 SkillHub | 发布 SkillHub |
+| `tob-competitor-snip` | 竞品应对卡片 | 已开发 / 已自测 / ClawHub 已发布 / 待发布 SkillHub | 发布 SkillHub |
+| `tob-poc-war-room` | POC 战情室 | 已开发 / 已自测 / 质量审查通过 / ClawHub 已发布 / 待发布 SkillHub | 发布 SkillHub |
+| `poc-to-contract-closer` | POC 转签约 | 已开发 / 已自测 / 质量审查通过 / ClawHub 已发布 / 待发布 SkillHub | 发布 SkillHub |
 
 ## 建议发布顺序
 
@@ -53,12 +53,12 @@ find . -name node_modules -o -name package-lock.json -o -name LICENSE -o -name t
 - https://clawhub.ai/skills/presales-win-blueprint
 - https://clawhub.ai/skills/delivery-risk-compass
 
-待发布 / 待补链接：
+本批次已发布：
 
-- `rag-hallucination-governor`
-- `tob-competitor-snip`
-- `tob-poc-war-room`
-- `poc-to-contract-closer`
+- https://clawhub.ai/william202404/rag-hallucination-governor
+- https://clawhub.ai/william202404/tob-competitor-snip
+- https://clawhub.ai/william202404/tob-poc-war-room
+- https://clawhub.ai/william202404/poc-to-contract-closer
 
 ## 发布信息
 

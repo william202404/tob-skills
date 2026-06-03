@@ -10,10 +10,10 @@ OpenClaw 专业技能集合，覆盖 ToB 销售、售前、交付、POC 战情�
 | [delivery-risk-compass](delivery-risk-compass/README.md) | 项目交付罗盘 — 输入项目状态，输出交付风险分析+缓解建议+验收清单 | ✅ 已发布 |
 | [tob-win-loss-review](tob-win-loss-review/README.md) | 丢单复盘助手 — 输入行业/阶段/竞品/关键事件，输出带知识库来源的根因分析 | ✅ 已发布 |
 | [tob-sales-proposal](tob-sales-proposal/README.md) | 提案提纲生成器 — 基于真实案例输出 4 模块高转化提案框架 | ✅ 已发布 |
-| [rag-hallucination-governor](rag-hallucination-governor/README.md) | RAG 幻觉治理助手 — 诊断 Top1 污染、引用缺口、冲突证据、权限串库和拒答/转人工边界 | ✅ 待发布 |
-| [tob-competitor-snip](tob-competitor-snip/README.md) | 竞品狙击卡片 — 输入竞品与客户关注点，输出差异化对比和反击话术 | ✅ 待发布 |
-| [tob-poc-war-room](tob-poc-war-room/README.md) | POC 战情室 — 输入 POC 进度、通过率、问题和客户沉默信号，输出 48h 排兵布阵 | ✅ 待发布 |
-| [poc-to-contract-closer](poc-to-contract-closer/README.md) | POC 转签约收口助手 — 检查采购路径、closing 窗口、冷却阈值和报价动作 | ✅ 待发布 |
+| [rag-hallucination-governor](rag-hallucination-governor/README.md) | RAG 幻觉治理助手 — 诊断 Top1 污染、引用缺口、冲突证据、权限串库和拒答/转人工边界 | ✅ 已发布 |
+| [tob-competitor-snip](tob-competitor-snip/README.md) | 竞品狙击卡片 — 输入竞品与客户关注点，输出差异化对比和反击话术 | ✅ 已发布 |
+| [tob-poc-war-room](tob-poc-war-room/README.md) | POC 战情室 — 输入 POC 进度、通过率、问题和客户沉默信号，输出 48h 排兵布阵 | ✅ 已发布 |
+| [poc-to-contract-closer](poc-to-contract-closer/README.md) | POC 转签约收口助手 — 检查采购路径、closing 窗口、冷却阈值和报价动作 | ✅ 已发布 |
 | [tob-competitor-analyzer](tob-competitor-analyzer/README.md) | 竞品分析工具 | 🔜 待开发 |
 
 ## 安装
@@ -24,6 +24,10 @@ clawhub install presales-win-blueprint
 clawhub install delivery-risk-compass
 clawhub install tob-sales-proposal
 clawhub install tob-win-loss-review
+clawhub install rag-hallucination-governor
+clawhub install tob-competitor-snip
+clawhub install tob-poc-war-room
+clawhub install poc-to-contract-closer
 
 # 或通过 OpenClaw SkillHub
 openclaw skills install presales-win-blueprint
