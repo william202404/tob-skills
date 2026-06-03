@@ -8,8 +8,8 @@
 |-------|------|------|----------|
 | `rag-hallucination-governor` | RAG 可靠性治理 | 已开发 / 已自测 / 待发布 | 更新 ClawHub / SkillHub |
 | `tob-competitor-snip` | 竞品应对卡片 | 已开发 / 已自测 / 待发布 | 更新 ClawHub / SkillHub |
-| `tob-poc-war-room` | POC 战情室 | 已开发 / 已自测 / Checker 通过 / 待发布 | 更新 ClawHub / SkillHub |
-| `poc-to-contract-closer` | POC 转签约 | 已开发 / 已自测 / Checker 通过 / 待发布 | 首次注册 + 发布 ClawHub / SkillHub |
+| `tob-poc-war-room` | POC 战情室 | 已开发 / 已自测 / 质量审查通过 / 待发布 | 更新 ClawHub / SkillHub |
+| `poc-to-contract-closer` | POC 转签约 | 已开发 / 已自测 / 质量审查通过 / 待发布 | 首次注册 + 发布 ClawHub / SkillHub |
 
 ## 建议发布顺序
 

@@ -4,7 +4,6 @@ version: 2.0.0
 description: ToB销售丢单复盘助手。输入行业/规模/阶段/竞品/关键事件，使用资深ToB销售经验规则引擎输出根因分析、风险信号和改进建议。
 priority: high
 source: senior-experience-rules
-workers: Tech, Sales, Checker
 created: 2026-05-15
 tags: [tob, sales, win-loss, review, rules]
 ---

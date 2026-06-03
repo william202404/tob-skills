@@ -39,7 +39,6 @@ Expected signal:
 
 ## Review Status
 
-- Tech implementation: complete
-- Peer review: passed
-- Checker review: P0=0, P1=0, P2=0
-- Release status: ready for Li Ning confirmation before ClawHub / SkillHub publishing
+- Implementation: complete
+- Quality review: passed
+- Release status: ready for publishing

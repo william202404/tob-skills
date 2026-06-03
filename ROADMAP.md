@@ -23,8 +23,8 @@
 | `tob-sales-proposal` | 销售提案 | 已发布 | 后续可统一测试依赖 |
 | `rag-hallucination-governor` | RAG 幻觉治理 | 已开发 / 自测通过 / 待发布 | 发布确认 |
 | `tob-competitor-snip` | 竞品狙击卡片 | 已开发 / 自测通过 / 待发布 | 发布确认 |
-| `tob-poc-war-room` | POC 战情室 | 已开发 / 自测通过 / Checker 通过 / 待发布 | 发布确认 |
-| `poc-to-contract-closer` | POC 转签约 | 已开发 / 自测通过 / Checker 通过 / 待发布 | 首次注册发布 |
+| `tob-poc-war-room` | POC 战情室 | 已开发 / 自测通过 / 质量审查通过 / 待发布 | 发布确认 |
+| `poc-to-contract-closer` | POC 转签约 | 已开发 / 自测通过 / 质量审查通过 / 待发布 | 首次注册发布 |
 | `tob-competitor-analyzer` | 深度竞品分析 | 待开发 | 重新定义联网/资料边界 |
 
 ## 建议后续方向
@@ -62,12 +62,12 @@ SkillHub 兼容要求：
 ## 发布流程
 
 1. 需求确认。
-2. Tech 开发实现。
+2. 开发实现。
 3. 本地自测。
-4. Checker 做隐私、平台兼容、逻辑和边界审查。
+4. 做隐私、平台兼容、逻辑和边界审查。
 5. 发布负责人确认。
 6. 发布 ClawHub / SkillHub / GitHub。
-7. 二蛋同步发布状态和素材。
+7. 同步发布状态和素材。
 
 ## 本地验证
 

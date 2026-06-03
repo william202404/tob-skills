@@ -46,7 +46,7 @@ This skill is worth building only if the output is driven mainly by field patter
 
 Current source mix target:
 
-- Li Ning field patterns: 70%
+- Field patterns: 70%
   - high-similarity wrong Top1 suppressing correct lower-ranked evidence;
   - citation-looking answers where key claims are not actually covered by cited chunks;
   - multiple policy or SOP versions retrieved together and blended into a synthetic answer;

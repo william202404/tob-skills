@@ -45,12 +45,6 @@ npm test --prefix tob-poc-war-room
 npm test --prefix poc-to-contract-closer
 ```
 
-## 工作流
-
-```
-需求(二蛋) → 开发(Tech) → 审查(Checker) → 发布(多平台) → 推文(矛盾)
-```
-
 ## 仓库
 
 所有代码及版本记录维护在此 monorepo。

@@ -54,12 +54,9 @@ node {baseDir}/src/generator.js --symptom "引用了错误政策但看起来有�
 
 For more examples, read `TEST_CASES.md`.
 
-## Review Pack
+## Review Notes
 
-Before sending this skill to 二蛋 or Checker, read:
-
-- `FIELD_SCENARIOS.md` for synthetic ToB delivery scenarios.
-- `CHECKER_REVIEW_PACKET.md` for review scope, evidence, and open risks.
+For synthetic ToB delivery scenarios, read `FIELD_SCENARIOS.md`.
 
 ## Field Rules
 
