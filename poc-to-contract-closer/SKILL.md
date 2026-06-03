@@ -84,9 +84,10 @@ Produce a one-page recap before pricing pressure starts.
 
 **Two-part structure:**
 - **Part A (for decision makers): 3-sentence summary** — pain + POC result + decision requested
-- **Part B (for procurement/internal):** 7-field detail — pain, scope, result, business value, risks, rollout, decision
+- **Part B (for procurement/internal):** 10-field detail — pain, scope, result, business value, remaining risks, procurement path, closing window, cooling threshold, rollout, decision
 
 Part A must be forwardable in a chat or email without attachments. Part B supports internal evaluation.
+If procurement path, closing window, or cooling threshold is missing, the recap must name that gap explicitly instead of implying contract readiness.
 
 ### 4b. Procurement Path Check
 

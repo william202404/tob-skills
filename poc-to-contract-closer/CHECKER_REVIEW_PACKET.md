@@ -42,8 +42,8 @@ The skill should:
 Run:
 
 ```bash
-npm test --prefix /Users/lining/.openclaw/workspace-tech/skills/poc-to-contract-closer
-node /Users/lining/.openclaw/workspace-tech/skills/poc-to-contract-closer/src/generator.js --pass-rate 94 --p0 0 --p1 1 --accepted-value "核心问答准确率达标" --decision-maker "经济买方已确认" --procurement-path "比价采购" --launch-window "6月试点上线"
+npm test --prefix poc-to-contract-closer
+node poc-to-contract-closer/src/generator.js --pass-rate 94 --p0 0 --p1 1 --accepted-value "核心问答准确率达标" --decision-maker "经济买方已确认" --procurement-path "比价采购" --launch-window "6月试点上线"
 ```
 
 Expected:

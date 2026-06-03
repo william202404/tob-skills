@@ -33,8 +33,8 @@ The skill should:
 Run:
 
 ```bash
-npm test --prefix /Users/lining/.openclaw/workspace-tech/skills/tob-competitor-snip
-node /Users/lining/.openclaw/workspace-tech/skills/tob-competitor-snip/src/generator.js --competitor "X公司" --industry "零售" --concern "价格便宜30%"
+npm test --prefix tob-competitor-snip
+node tob-competitor-snip/src/generator.js --competitor "X公司" --industry "零售" --concern "价格便宜30%"
 ```
 
 Expected:

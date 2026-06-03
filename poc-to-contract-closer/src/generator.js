@@ -103,9 +103,10 @@ function assessClosing(config) {
   });
 
   const hasHardCoolingGap = cooling.status === 'Gap' || cooling.status === 'Blocked';
-  const status = score >= 8 && p0 === 0 && !hasHardCoolingGap ? 'Ready' : score >= 5 && p0 === 0 ? 'Nearly ready' : 'Not ready';
+  let status = score >= 8 && p0 === 0 && !hasHardCoolingGap ? 'Ready' : score >= 5 && p0 === 0 ? 'Nearly ready' : 'Not ready';
+  if (cooling.status === 'Blocked') status = 'Blocked';
   const mainBlocker = p0 > 0 ? 'P0 issue not cleared' : gaps[0] || 'none';
-  const returnToWarRoom = p0 > 0 || (passRate !== null && passRate < 90);
+  const returnToWarRoom = p0 > 0 || (passRate !== null && passRate < 90) || cooling.status === 'Blocked';
 
   return { status, gaps, actions, mainBlocker, returnToWarRoom, cooling };
 }
@@ -171,6 +172,9 @@ function generateReport(config) {
   lines.push(`- Result: ${Number.isFinite(config.passRate) ? `${config.passRate}% pass rate` : 'missing measurable result'}`);
   lines.push(`- Business value: ${config.acceptedValue || 'missing'}`);
   lines.push(`- Remaining risks: P0=${Number.isFinite(config.p0) ? config.p0 : 0}, P1=${Number.isFinite(config.p1) ? config.p1 : 0}, P2=${Number.isFinite(config.p2) ? config.p2 : 0}`);
+  lines.push(`- Procurement path: ${config.procurementPath || 'missing'}`);
+  lines.push(`- Closing window: ${config.launchWindow || 'missing'}`);
+  lines.push(`- Cooling threshold: ${Number.isFinite(config.silenceDays) ? `${config.silenceDays} days silence; ${result.cooling.status}` : 'missing silence-days'}`);
   lines.push(`- Rollout proposal: ${config.launchWindow || 'missing launch window'}`);
   lines.push('- Decision requested: confirm buyer/procurement path and next contract node', '');
 

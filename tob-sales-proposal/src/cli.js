@@ -29,7 +29,7 @@ program
   .action(async (options) => {
     try {
       console.log(chalk.blue('📄 ToB 销售提案生成器'));
-      console.log(chalk.gray('基于19年实战经验 | 作者：李宁\n'));
+      console.log(chalk.gray('基于资深 ToB 实战经验\n'));
 
       let config = options;
 

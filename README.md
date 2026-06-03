@@ -1,6 +1,6 @@
 # tob-skills — ToB 销售技能套件
 
-OpenClaw 专业技能集合，覆盖 ToB 销售、POC 交付、签约推进、RAG 可靠性治理与竞品应对。
+OpenClaw 专业技能集合，覆盖 ToB 销售、售前、交付、POC 战情室、签约推进、RAG 可靠性治理与竞品应对。
 
 ## 技能一览
 
@@ -8,13 +8,12 @@ OpenClaw 专业技能集合，覆盖 ToB 销售、POC 交付、签约推进、RA
 |------|------|------|
 | [presales-win-blueprint](presales-win-blueprint/README.md) | 售前方案通关秘籍 — 输入客户需求，输出售前方案框架+演示策略+关键利益点 | ✅ 已发布 |
 | [delivery-risk-compass](delivery-risk-compass/README.md) | 项目交付罗盘 — 输入项目状态，输出交付风险分析+缓解建议+验收清单 | ✅ 已发布 |
-| [rag-hallucination-governor](rag-hallucination-governor/README.md) | RAG 幻觉治理器 — 诊断 Top1 污染、引用缺口、改写漂移、权限/范围错配等生产风险 | 🟡 待发布确认 |
 | [tob-win-loss-review](tob-win-loss-review/README.md) | 丢单复盘助手 — 输入行业/阶段/竞品/关键事件，输出带知识库来源的根因分析 | ✅ 已发布 |
 | [tob-sales-proposal](tob-sales-proposal/README.md) | 提案提纲生成器 — 基于真实案例输出 4 模块高转化提案框架 | ✅ 已发布 |
-| [rag-hallucination-governor](rag-hallucination-governor/README.md) | RAG 幻觉治理助手 — 诊断 Top1 污染、引用缺口、冲突证据、权限串库和拒答/转人工边界 | ✅ 待发布确认 |
-| [tob-competitor-snip](tob-competitor-snip/README.md) | 竞品狙击卡片 — 输入竞品与客户关注点，输出差异化对比和反击话术 | ✅ 待发布确认 |
-| [tob-poc-war-room](tob-poc-war-room/README.md) | POC 战情室 — 输入 POC 进度、通过率、问题和客户沉默信号，输出 48h 排兵布阵 | ✅ 待发布确认 |
-| [poc-to-contract-closer](poc-to-contract-closer/README.md) | POC 转签约收口助手 — 检查采购路径、closing 窗口、冷却阈值和报价动作 | ✅ 待发布确认 |
+| [rag-hallucination-governor](rag-hallucination-governor/README.md) | RAG 幻觉治理助手 — 诊断 Top1 污染、引用缺口、冲突证据、权限串库和拒答/转人工边界 | ✅ 待发布 |
+| [tob-competitor-snip](tob-competitor-snip/README.md) | 竞品狙击卡片 — 输入竞品与客户关注点，输出差异化对比和反击话术 | ✅ 待发布 |
+| [tob-poc-war-room](tob-poc-war-room/README.md) | POC 战情室 — 输入 POC 进度、通过率、问题和客户沉默信号，输出 48h 排兵布阵 | ✅ 待发布 |
+| [poc-to-contract-closer](poc-to-contract-closer/README.md) | POC 转签约收口助手 — 检查采购路径、closing 窗口、冷却阈值和报价动作 | ✅ 待发布 |
 | [tob-competitor-analyzer](tob-competitor-analyzer/README.md) | 竞品分析工具 | 🔜 待开发 |
 
 ## 安装
@@ -30,6 +29,9 @@ clawhub install tob-win-loss-review
 openclaw skills install presales-win-blueprint
 openclaw skills install delivery-risk-compass
 openclaw skills install rag-hallucination-governor
+openclaw skills install tob-competitor-snip
+openclaw skills install tob-poc-war-room
+openclaw skills install poc-to-contract-closer
 openclaw skills install tob-sales-proposal
 openclaw skills install tob-win-loss-review
 ```

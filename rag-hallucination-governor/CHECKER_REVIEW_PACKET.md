@@ -60,7 +60,7 @@ Tech fixes applied:
 2. Does the output include trigger signal, failure mode, changed control, metric, and refuse/handoff condition?
 3. Are privacy boundaries respected: no customer names, private snippets, prices, contracts, or exact incident claims?
 4. Are Critical issues present in safety, leakage, or overclaiming?
-5. Is the skill ready for 李宁 release confirmation, or should it stay in Tech development?
+5. Is the skill ready for release-owner confirmation, or should it stay in Tech development?
 
 ## Known Open Risks
 

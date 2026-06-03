@@ -1,103 +1,83 @@
-# 经验驱动 Skill 套件 — 开发计划
+# ToB Skill 套件 — Roadmap
 
-> **方向更新 2026-05-23**：从"ToB Skills"升级为"经验驱动 Skills"
-> 不再局限于 ToB 软件行业，而是从李宁 19 年从业经验（ToB + 政府 + 应急 + 个人成长）中提炼可复用的方法论沉淀为 Skills
-> 原则：不做定式化/局限性的功能，每个 Skill 都是真实经验的蒸馏
+更新日期：2026-06-03
 
----
+## 定位
 
-## Skill 清单与排期
+这个仓库沉淀可离线运行的 ToB 现场经验 Skill，覆盖售前、竞品、POC、签约、交付、复盘和 RAG 可靠性治理。
 
-### Phase 1 — 核心售前体验（优先）
+核心原则：
 
-| # | Skill 名称 | 核心功能 | 你的经验输入 | 预计耗时 | 状态 |
-|---|-----------|---------|-------------|---------|------|
-| 1 | `presales-win-blueprint` | **售前方案通关秘籍** — 方案比稿、客户控场、大单推进节奏 | 智齿/腾讯时代方案比武经验、大客户销售配合、招投标策略 | 2天 | 📝 **制作中** |
-| 2 | `delivery-risk-compass` | **项目交付罗盘** — 交付风险评估 + 进度管控 + 客户沟通 Checklist | 京东应急部/YJB项目、百胜实施全流程、中软多项目管理 | 2天 | 📝 待开始 |
-| 3 | `biz-dx-navigator` | **数字化转型避坑指南** — 诊断当前阶段 + 高频陷阱清单 + 应对策略 | 零售/物流/政务/能源多行业跨行业经验 | 2天 | 📝 待开始 |
-| 4 | `gov-project-handbook` | **政府/央企项目通关手册** — 控标、围标策略、评审应对 | 应急部/YJB/东电/广汽等大政府项目经验 | 2天 | 📝 待开始 |
+1. 经验规则化：把可复用判断沉淀成规则、CLI 和测试。
+2. 去敏发布：不包含真实客户名、个人名、厂商名、项目名、报价、合同条款或私有知识库片段。
+3. 默认离线：不联网、不编事实；需要真实材料时由用户提供或明确授权联网。
+4. 可验证：每个可执行 Skill 至少包含 README、SKILL.md、CLI 或脚本入口、测试。
 
-### Phase 2 — 已上线（维持）
+## 当前 Skill 状态
 
-| # | Skill 名称 | 状态 |
-|---|-----------|------|
-| 5 | `tob-win-loss-review` | ✅ 已发布 v2.0.0 |
-| 6 | `tob-sales-proposal` | ✅ 已发布 v1.0.0 |
+| Skill | 方向 | 状态 | 下一步 |
+|-------|------|------|--------|
+| `presales-win-blueprint` | 售前方案通关 | 已发布 | 维护 |
+| `delivery-risk-compass` | 交付风险判断 | 已发布 | 维护 |
+| `tob-win-loss-review` | 丢单复盘 | 已发布 | 维护 |
+| `tob-sales-proposal` | 销售提案 | 已发布 | 后续可统一测试依赖 |
+| `rag-hallucination-governor` | RAG 幻觉治理 | 已开发 / 自测通过 / 待发布 | 发布确认 |
+| `tob-competitor-snip` | 竞品狙击卡片 | 已开发 / 自测通过 / 待发布 | 发布确认 |
+| `tob-poc-war-room` | POC 战情室 | 已开发 / 自测通过 / Checker 通过 / 待发布 | 发布确认 |
+| `poc-to-contract-closer` | POC 转签约 | 已开发 / 自测通过 / Checker 通过 / 待发布 | 首次注册发布 |
+| `tob-competitor-analyzer` | 深度竞品分析 | 待开发 | 重新定义联网/资料边界 |
 
-### Phase 3 — 扩展方向（待确认）
+## 建议后续方向
 
-| # | Skill 名称 | 思路 | 状态 |
-|---|-----------|------|------|
-| 7 | `personal-note-distiller` | 个人笔记→结构化方法论（从 Get 笔记中提炼） | 💡 待确认 |
-| 8 | `meeting-battle-log` | 会议/汇报攻防复盘（白鹰、张硕对话中大量场景） | 💡 待确认 |
-| 9 | `vendor-selection-matrix` | 供应商选型评估矩阵（智齿 vs 七鱼 vs 沃丰的真实评估经验） | 💡 待确认 |
-| 10 | `career-compass-tob` | ToB从业者职业发展指南（13年从实施→架构师→PM的全路径经验） | 💡 待确认 |
+| 优先级 | Skill | 价值 | 注意事项 |
+|--------|-------|------|----------|
+| P1 | `tob-competitor-analyzer` | 从“即时话术卡”扩展到深度竞品报告 | 必须明确联网、来源引用和事实更新机制 |
+| P1 | `biz-dx-navigator` | 数字化转型避坑诊断 | 继续保持行业抽象，不写真实案例 |
+| P2 | `gov-project-handbook` | 政府/央企项目流程与风险控制 | 避免招投标敏感表述和真实项目影射 |
+| P2 | `vendor-selection-matrix` | 供应商选型矩阵 | 需区分公开事实、用户材料和经验判断 |
+| P3 | `meeting-battle-log` | 会议攻防复盘 | 可先做本地输入模板，不接入私有会议内容 |
 
----
+## 标准结构
 
-## 技术规范
-
-### 每个 Skill 的标准结构
-
-```
+```text
 skill-name/
-├── SKILL.md          # 技能说明文档（必须）
-├── README.md         # GitHub 展示文档
-├── package.json      # 如需要依赖
+├── SKILL.md
+├── README.md
+├── package.json 或脚本入口说明
 ├── src/
-│   ├── index.js      # 主逻辑
-│   └── rules.js      # 经验规则引擎（核心）
-├── templates/        # 模板文件
-├── examples/         # 使用示例
-└── tests/            # 测试用例
+│   ├── generator.js 或 index.js
+│   └── rules.js
+└── tests/
+    └── run-tests.js 或 test.js
 ```
 
-### 核心原则（2026-05-23 李宁要求）
+SkillHub 兼容要求：
 
-1. **经验蒸馏**：每个 Skill 的核心逻辑必须来自李宁的真实经验，不是通用的方法论
-2. **独立运行**：Skill 不依赖 ChromaDB 或李宁的个人数据，其他人拿来就能用
-3. **规则引擎**：经验以规则形式嵌入代码（rules.js），不是让 LLM 自由发挥
-4. **无废话设计**：直接说人话，skip 开场白
+- 不提交 `node_modules/`
+- 不提交 `package-lock.json`
+- 不提交 `LICENSE`
+- 不提交 `templates/` 目录
+- 不提交 `.pyc`、`.exe`、`.dll`、`.so` 等非文本/二进制产物
 
-### ⚠️ 数据安全铁律（2026-05-23 新增）
+## 发布流程
 
-1. **禁止真实客户名/公司名** — 所有客户案例用行业级描述（某快消集团、某政府项目）
-2. **禁止真实人名** — 不出现李宁、客户方联系人、同事等任何真实姓名
-3. **禁止真实竞品名** — 用「某互联网大厂客服产品」「某SaaS竞品」替代
-4. **禁止具体项目数据** — 去掉版本号、测试点数、具体金额等可溯源的细节
-5. **经验标注去公司化** — from: '某政府应急项目' 而不是 '某电商集团YJB项目'
+1. 需求确认。
+2. Tech 开发实现。
+3. 本地自测。
+4. Checker 做隐私、平台兼容、逻辑和边界审查。
+5. 发布负责人确认。
+6. 发布 ClawHub / SkillHub / GitHub。
+7. 二蛋同步发布状态和素材。
 
-## 发布前必走流程
+## 本地验证
 
-1. 二蛋出需求/SKILL.md
-2. Tech 开发代码
-3. ✅ **Checker 隐私审查** — 审查通过才能发布
-4. 测试验证
-5. 发布
+```bash
+npm test --prefix presales-win-blueprint
+npm test --prefix delivery-risk-compass
+npm test --prefix rag-hallucination-governor
+npm test --prefix tob-competitor-snip
+npm test --prefix tob-poc-war-room
+npm test --prefix poc-to-contract-closer
+```
 
----
-
-## 发布渠道
-
-| 渠道 | 用途 | 链接 |
-|-----|------|------|
-| GitHub | 代码托管、开源展示 | github.com/lining/tob-skills |
-| ClawHub | OpenClaw 官方技能市场 | clawhub.ai |
-| SkillHub | 国内技能市场 | - |
-| 公众号 | 内容营销、使用教程 | 数字矛盾体 |
-
----
-
-## 下一步行动
-
-1. [ ] ✅ `presales-win-blueprint` — SKILL.md + 代码开发中
-2. [ ] `delivery-risk-compass` — 待开始
-3. [ ] `biz-dx-navigator` — 待开始
-4. [ ] `gov-project-handbook` — 待开始
-5. [ ] 更新 GitHub 仓库 README.md 反映新方向
-
----
-
-*开始时间: 2026-03-17*  
-*方向更新: 2026-05-23 — 从 ToB Skills → 经验驱动 Skills*  
-*目标: 持续迭代*
+`tob-sales-proposal` 当前使用 Jest 依赖，发布前如需纳入一键全量测试，应先补齐依赖安装或改为无外部依赖 smoke test。

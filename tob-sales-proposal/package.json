@@ -1,7 +1,7 @@
 {
   "name": "tob-sales-proposal",
   "version": "1.2.0",
-  "description": "ToB销售提案生成器 - 基于19年实战经验",
+  "description": "ToB销售提案生成器 - 基于资深实战经验",
   "main": "src/index.js",
   "bin": {
     "tob-sales-proposal": "./src/cli.js"
@@ -19,7 +19,7 @@
     "openclaw",
     "skill"
   ],
-  "author": "李宁 <lining434@gmail.com>",
+  "author": "tob-skills contributors",
   "license": "MIT",
   "dependencies": {
     "commander": "^11.0.0",

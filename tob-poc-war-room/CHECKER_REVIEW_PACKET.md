@@ -38,8 +38,8 @@ The skill should:
 Run:
 
 ```bash
-npm test --prefix /Users/lining/.openclaw/workspace-tech/skills/tob-poc-war-room
-node /Users/lining/.openclaw/workspace-tech/skills/tob-poc-war-room/src/generator.js --industry "零售" --objective "客服知识库 POC 通过率 >=90%" --day 8 --pass-rate 93 --silence-days 7 --problems "一个 SSO 问题 60h 未关闭，客户 champion 认可结果"
+npm test --prefix tob-poc-war-room
+node tob-poc-war-room/src/generator.js --industry "零售" --objective "客服知识库 POC 通过率 >=90%" --day 8 --pass-rate 93 --silence-days 7 --problems "一个 SSO 问题 60h 未关闭，客户 champion 认可结果"
 ```
 
 Expected:
