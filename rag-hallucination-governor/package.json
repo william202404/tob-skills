@@ -1,15 +1,16 @@
 {
   "name": "rag-hallucination-governor",
   "version": "1.0.0",
-  "description": "RAG幻觉治理助手。诊断检索、引用、冲突、权限、阈值和人工转接风险。",
+  "description": "RAG幻觉治理工具。输入RAG系统症状/指标，输出根因诊断+阈值调参建议。基于10+生产RAG交付经验。",
   "main": "src/generator.js",
   "bin": {
     "rag-hallucination-governor": "./cli.js"
   },
   "scripts": {
     "start": "node src/generator.js",
-    "test": "node tests/run-tests.js"
+    "test": "node tests/run-tests.js",
+    "smoke": "node src/generator.js --symptom \"AI经常编造不存在的政策条款\" --industry \"政务\" --hitRate 0.4 --firstHitAccuracy 0.3"
   },
-  "keywords": ["rag", "hallucination", "retrieval", "reliability"],
+  "keywords": ["tob", "rag", "hallucination", "governance", "production", "ai"],
   "license": "MIT-0"
 }

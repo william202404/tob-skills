@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// tob-competitor-snip CLI wrapper
+// tob-poc-budget-justify CLI wrapper
 const { spawn } = require('child_process');
 const path = require('path');
 

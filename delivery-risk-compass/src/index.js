@@ -157,17 +157,21 @@ async function interactive() {
   printOutput(generateAssessment({ project, industry, type, cycle, teamSize, payment, clientLocation, phase, signals }));
 }
 
-if (process.argv.includes('--quick')) {
-  const input = parseArgs();
-  if (!input.project || !input.industry) {
-    console.error('快速模式需要至少指定 --project 和 --industry');
-    console.error('示例: delivery-risk-compass --quick --project "某平台升级项目" --industry "政府/公共服务"');
-    process.exit(1);
+if (require.main === module) {
+  if (process.argv.includes('--quick')) {
+    const input = parseArgs();
+    if (!input.project || !input.industry) {
+      console.error('快速模式需要至少指定 --project 和 --industry');
+      console.error('示例: delivery-risk-compass --quick --project "某平台升级项目" --industry "政府/公共服务"');
+      process.exit(1);
+    }
+    printOutput(generateAssessment(input));
+  } else {
+    interactive().catch(error => {
+      console.error(error);
+      process.exit(1);
+    });
   }
-  printOutput(generateAssessment(input));
-} else {
-  interactive().catch(error => {
-    console.error(error);
-    process.exit(1);
-  });
 }
+
+module.exports = { generateAssessment, parseArgs, printOutput };

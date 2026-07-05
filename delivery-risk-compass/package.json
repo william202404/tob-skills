@@ -1,7 +1,7 @@
 {
   "name": "delivery-risk-compass",
   "version": "1.0.0",
-  "description": "项目交付罗盘：行业洞察与经验打法风险引擎",
+  "description": "\u9879\u76ee\u4ea4\u4ed8\u7f57\u76d8\uff1a\u884c\u4e1a\u6d1e\u5bdf\u4e0e\u7ecf\u9a8c\u6253\u6cd5\u98ce\u9669\u5f15\u64ce",
   "main": "src/index.js",
   "bin": {
     "delivery-risk-compass": "src/index.js"
@@ -9,5 +9,15 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "node tests/test.js"
+  },
+  "license": "MIT-0",
+  "keywords": [
+    "delivery",
+    "risk",
+    "tob",
+    "project-management"
+  ],
+  "engines": {
+    "node": ">=18"
   }
 }

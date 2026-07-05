@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('./src/generator.js');
+require('./src/generator.js').main();

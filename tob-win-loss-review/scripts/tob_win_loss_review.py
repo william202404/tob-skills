@@ -3,17 +3,12 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-PRIVATE_NAME_TOKENS = {
-    token.strip()
-    for token in os.environ.get("TOB_SKILLS_PRIVATE_NAME_TOKENS", "").split(",")
-    if token.strip()
-}
+PRIVATE_NAME_TOKENS = {"张三", "張三", "johndoe", "johnsmith"}
 STOPWORDS = set("客户 我们 对方 竞品 虽然 但是 因为 所以 一个 这个 那个 阶段 有限 表现 更好 倾向 重新 评估".split())
 
 

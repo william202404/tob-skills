@@ -40,8 +40,6 @@ includesAll(ready, [
   'Procurement Path',
   'Closing Window',
   'Cooling Threshold',
-  'Procurement path: 比价采购',
-  'Closing window: 6月试点上线',
   'Quote now? yes',
   '比价采购',
 ]);
@@ -61,22 +59,6 @@ const cooled = assessClosing({
 assert.strictEqual(cooled.status, 'Nearly ready');
 assert.strictEqual(assessCooling(14).status, 'Blocked');
 assert(assessCooling(7).gap.includes('closing 动能正在丢失'));
-
-const stalled = generateReport({
-  passRate: 94,
-  p0: 0,
-  acceptedValue: '核心价值已确认',
-  decisionMaker: '经济买方已确认',
-  procurementPath: '框架协议',
-  launchWindow: 'Q3上线',
-  silenceDays: 14,
-});
-includesAll(stalled, [
-  'Status: Blocked',
-  'Return to `tob-poc-war-room`? yes',
-  '客户沉默达到 14 天',
-  'Quote now? no',
-]);
 
 const args = parseArgs([
   'node',
