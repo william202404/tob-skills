@@ -1,10 +1,14 @@
 ---
 name: tob-poc-war-room
+slug: tob-poc-war-room
+displayName: POC战情室
+version: 1.0.0
 description: POC war-room skill for ToB AI delivery. Use when a user needs to diagnose POC status, track pass rate, classify blockers, build a 48-hour closure plan, detect customer silence risk, generate daily POC war-room reports, or decide when a POC is ready to enter contract closing.
 priority: critical
 source: field-experience
 workers: [tech, pm, sales]
 created: 2026-06-03
+updated: 2026-07-06
 tags: [tob, poc, delivery, war-room, risk-control]
 ---
 

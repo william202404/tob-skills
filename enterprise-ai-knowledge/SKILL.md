@@ -1,10 +1,14 @@
 ---
 name: enterprise-ai-knowledge
+slug: enterprise-ai-knowledge
+displayName: 企业AI实施知识库
+version: 1.0.0
 description: 企业AI实施知识库。8大洞察（Pilot Purgatory/ROI度量/Harness Engineering/6层架构等）、5阶段教学计划、4级能力成长路线图。来源：Stanford Playbook + 企业AI成熟度研究。
 source: auto-evolved
 priority: medium
 workers: [product-manager]
 created: 2026-06-02
+updated: 2026-07-06
 ---
 
 # 企业AI知识库

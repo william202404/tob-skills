@@ -1,10 +1,14 @@
 ---
 name: tob-sales-proposal
+slug: tob-sales-proposal
+displayName: ToB销售提案生成器
+version: 1.0.0
 description: ToB销售提案生成器。输入客户信息/行业/痛点/产品，基于知识库真实案例输出带品牌色CSS的4模块HTML分页提案。
 priority: high
 source: experience-backed
 workers: [sales, pm]
 created: 2026-05-16
+updated: 2026-07-06
 tags: [tob, sales, proposal, b2b, presales]
 ---
 

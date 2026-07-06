@@ -1,12 +1,14 @@
 ---
 name: ontology-knowledge-graph-mgmt
+slug: ontology-knowledge-graph-mgmt
+displayName: 知识图谱管理
 description: 知识图谱的补录、同步、修复、搜索全流程。包括graph.jsonl格式校验→SQLite同步→向量搜索集成→可选向量库接入。
 priority: medium
 source: auto-evolved-worker
 workers: [tech, ops]
 created: 2026-04-23
-updated: 2026-07-04
-version: 2.0
+updated: 2026-07-06
+version: 2.0.1
 category: knowledge-management
 tags: [knowledge-graph, ontology, sqlite, vector-search]
 ---

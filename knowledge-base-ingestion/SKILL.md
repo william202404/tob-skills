@@ -1,12 +1,14 @@
 ---
 name: knowledge-base-ingestion
+slug: knowledge-base-ingestion
+displayName: 知识库灌入
 description: 将外部知识库（文档/笔记/共享文件等）提取内容并灌入向量数据库的标准流程。支持 ChromaDB、Pinecone、Weaviate 等多种向量库后端。包括预扫描目录、识别并排除无效文件、执行分批灌入、验证索引质量、失败恢复。
 priority: medium
 source: auto-evolved
 workers: [tech, ops]
 created: 2026-04-23
-updated: 2026-07-04
-version: 3.0
+updated: 2026-07-06
+version: 3.0.1
 category: data-pipeline
 tags: [knowledge-base, vector-search, ingestion, vector-database]
 ---

@@ -1,10 +1,14 @@
 ---
 name: poc-to-contract-closer
+slug: poc-to-contract-closer
+displayName: POC转签约收口
+version: 1.0.0
 description: Closing playbook for converting a successful ToB POC into a contract. Use when a POC is technically accepted, near final demo, has cleared P0 issues, or has stalled after success and the team needs a structured contract path, gap list, one-page recap, quote action, and launch-node plan.
 priority: critical
 source: field-experience
 workers: [tech, pm, sales]
 created: 2026-06-03
+updated: 2026-07-06
 tags: [tob, poc, closing, contract, sales]
 ---
 

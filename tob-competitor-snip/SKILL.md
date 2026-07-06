@@ -1,10 +1,14 @@
 ---
 name: tob-competitor-snip
+slug: tob-competitor-snip
+displayName: 竞品狙击卡片
+version: 1.0.0
 description: ToB竞品狙击卡片。输入竞品名称/行业/客户关注点，输出差异化对比+狙击话术。基于ToB项目经验萃取的规则（去敏），不编造案例。
 priority: high
 source: experience-backed
 workers: [sales, pm]
 created: 2026-05-30
+updated: 2026-07-06
 tags: [tob, sales, competitor, snip, presales]
 ---
 

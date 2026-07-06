@@ -1,10 +1,14 @@
 ---
 name: tob-poc-budget-justify
+slug: tob-poc-budget-justify
+displayName: POC预算论证
+version: 1.0.0
 description: ToB POC预算论证助手。输入客户/行业/POC目标，输出POC范围界定+资源估算+预算论证。基于ToB项目经验萃取的规则（去敏），不编造数据。
 priority: high
 source: experience-backed
 workers: [sales, pm]
 created: 2026-05-30
+updated: 2026-07-06
 tags: [tob, sales, poc, budget, justify, presales]
 ---
 
