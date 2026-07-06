@@ -1,11 +1,14 @@
 ---
 name: rag-hallucination-governor
+slug: rag-hallucination-governor
+displayName: RAG幻觉治理
+version: 1.0.0
 description: RAG幻觉治理工具。输入RAG系统当前指标/症状/检索日志片段，输出根因诊断+阈值调参建议+治理方案。基于10+生产RAG交付实战经验，不是通用RAG教程。
 priority: critical
 source: experience-backed
 workers: [tech, pm]
 created: 2026-06-01
-version: 1.0.0
+updated: 2026-07-06
 tags: [tob, rag, hallucination, governance, production, ai]
 ---
 

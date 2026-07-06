@@ -1,5 +1,7 @@
 ---
 name: delivery-risk-compass
+slug: delivery-risk-compass
+displayName: 项目交付罗盘
 version: 2.1.0
 description: 项目交付罗盘 — 按行业、阶段、项目形态和风险信号输出交付健康度、行业风险、卡点预警与救急动作。触发词：交付评估、项目风险、risk assessment、交付体检、项目健康度、救急方案。
 priority: high

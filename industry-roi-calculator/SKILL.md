@@ -1,5 +1,7 @@
 ---
 name: industry-roi-calculator
+slug: industry-roi-calculator
+displayName: 行业ROI测算卡
 version: 1.0.0
 description: 行业化 ROI 测算卡。输入客户行业、规模、场景和当前成本，输出 ROI 测算卡、PoC 范围建议、风险假设和案例引用。用于售前方案阶段量化价值主张。
 priority: critical

@@ -1,5 +1,7 @@
 ---
 name: presales-win-blueprint
+slug: presales-win-blueprint
+displayName: 售前方案通关秘籍
 version: 2.0.0
 description: 售前方案通关秘籍，按客户行业、售前阶段、竞品形态和风险信号生成行业化赢单打法。
 priority: high
