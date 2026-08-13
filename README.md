@@ -1,6 +1,6 @@
 # tob-skills — ToB 销售技能套件
 
-OpenClaw 专业技能集合，覆盖 ToB 销售、售前、交付、POC 战情室、签约推进、RAG 可靠性治理与竞品应对。
+OpenClaw 专业技能集合，覆盖 ToB 销售、售前、交付、POC 战情室、签约推进、知识库、RAG 可靠性治理与竞品应对。
 
 ## 技能一览
 
@@ -14,6 +14,11 @@ OpenClaw 专业技能集合，覆盖 ToB 销售、售前、交付、POC 战情�
 | [tob-competitor-snip](tob-competitor-snip/README.md) | 竞品狙击卡片 — 输入竞品与客户关注点，输出差异化对比和反击话术 | ✅ 已发布 |
 | [tob-poc-war-room](tob-poc-war-room/README.md) | POC 战情室 — 输入 POC 进度、通过率、问题和客户沉默信号，输出 48h 排兵布阵 | ✅ 已发布 |
 | [poc-to-contract-closer](poc-to-contract-closer/README.md) | POC 转签约收口助手 — 检查采购路径、closing 窗口、冷却阈值和报价动作 | ✅ 已发布 |
+| [enterprise-ai-knowledge](enterprise-ai-knowledge/SKILL.md) | 企业AI实施知识库 — 输入企业AI问题，输出基于 8 大洞察的实施建议、成熟度框架和能力路线图 | ✅ 已发布 |
+| [industry-roi-calculator](industry-roi-calculator/SKILL.md) | 行业ROI测算卡 — 输入客户行业/规模/场景/成本，输出 ROI 测算卡、PoC 范围建议和风险假设 | ✅ 已发布 |
+| [knowledge-base-ingestion](knowledge-base-ingestion/SKILL.md) | 知识库灌入 — 预扫描目录、分批灌入向量库并验证索引质量（核心脚本不在本目录） | ✅ 已发布 |
+| [ontology-knowledge-graph-mgmt](ontology-knowledge-graph-mgmt/SKILL.md) | 知识图谱管理 — 图谱补录、格式校验、SQLite 同步与搜索（核心脚本不在本目录） | ✅ 已发布 |
+| [tob-poc-budget-justify](tob-poc-budget-justify/SKILL.md) | POC预算论证 — 输入客户/行业/POC 目标，输出范围界定、资源估算和预算论证 | ✅ 已发布 |
 | [tob-competitor-analyzer](tob-competitor-analyzer/README.md) | 竞品分析工具 | 🔜 待开发 |
 
 ## 安装
@@ -40,6 +45,8 @@ openclaw skills install tob-sales-proposal
 openclaw skills install tob-win-loss-review
 ```
 
+`enterprise-ai-knowledge`、`industry-roi-calculator`、`knowledge-base-ingestion`、`ontology-knowledge-graph-mgmt`、`tob-poc-budget-justify` 已在本仓库发布；ClawHub / SkillHub 安装命令以各技能目录内说明为准，未在此添加未经确认的安装入口。
+
 ## 本地试用
 
 ```bash
@@ -47,6 +54,8 @@ npm test --prefix rag-hallucination-governor
 npm test --prefix tob-competitor-snip
 npm test --prefix tob-poc-war-room
 npm test --prefix poc-to-contract-closer
+npm test --prefix industry-roi-calculator
+npm test --prefix tob-poc-budget-justify
 ```
 
 ## 仓库
