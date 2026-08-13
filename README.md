@@ -11,9 +11,9 @@ OpenClaw 专业技能集合，覆盖 ToB 销售、售前、交付、POC 战情�
 | [tob-win-loss-review](tob-win-loss-review/README.md) | 丢单复盘助手 — 输入行业/阶段/竞品/关键事件，输出带知识库来源的根因分析 | ✅ 已发布 |
 | [tob-sales-proposal](tob-sales-proposal/README.md) | 提案提纲生成器 — 基于真实案例输出 4 模块高转化提案框架 | ✅ 已发布 |
 | [rag-hallucination-governor](rag-hallucination-governor/README.md) | RAG 幻觉治理助手 — 诊断 Top1 污染、引用缺口、冲突证据、权限串库和拒答/转人工边界 | ✅ 已发布 |
-| [tob-competitor-snip](tob-competitor-snip/README.md) | 竞品狙击卡片 — 输入竞品与客户关注点，输出差异化对比和反击话术 | ✅ 已发布 |
-| [tob-poc-war-room](tob-poc-war-room/README.md) | POC 战情室 — 输入 POC 进度、通过率、问题和客户沉默信号，输出 48h 排兵布阵 | ✅ 已发布 |
-| [poc-to-contract-closer](poc-to-contract-closer/README.md) | POC 转签约收口助手 — 检查采购路径、closing 窗口、冷却阈值和报价动作 | ✅ 已发布 |
+| [tob-competitor-snip](tob-competitor-snip/SKILL.md) | 竞品狙击卡片 — 输入竞品与客户关注点，输出差异化对比和反击话术 | ✅ 已发布 |
+| [tob-poc-war-room](tob-poc-war-room/SKILL.md) | POC 战情室 — 输入 POC 进度、通过率、问题和客户沉默信号，输出 48h 排兵布阵 | ✅ 已发布 |
+| [poc-to-contract-closer](poc-to-contract-closer/SKILL.md) | POC 转签约收口助手 — 检查采购路径、closing 窗口、冷却阈值和报价动作 | ✅ 已发布 |
 | [enterprise-ai-knowledge](enterprise-ai-knowledge/SKILL.md) | 企业AI实施知识库 — 输入企业AI问题，输出基于 8 大洞察的实施建议、成熟度框架和能力路线图 | ✅ 已发布 |
 | [industry-roi-calculator](industry-roi-calculator/SKILL.md) | 行业ROI测算卡 — 输入客户行业/规模/场景/成本，输出 ROI 测算卡、PoC 范围建议和风险假设 | ✅ 已发布 |
 | [knowledge-base-ingestion](knowledge-base-ingestion/SKILL.md) | 知识库灌入 — 预扫描目录、分批灌入向量库并验证索引质量（核心脚本不在本目录） | ✅ 已发布 |
@@ -51,11 +51,9 @@ openclaw skills install tob-win-loss-review
 
 ```bash
 npm test --prefix rag-hallucination-governor
-npm test --prefix tob-competitor-snip
 npm test --prefix tob-poc-war-room
 npm test --prefix poc-to-contract-closer
 npm test --prefix industry-roi-calculator
-npm test --prefix tob-poc-budget-justify
 ```
 
 ## 仓库
