@@ -1,6 +1,8 @@
 # SkillHub 发布内容
 
-更新日期：2026-06-03
+更新日期：2026-08-13
+
+7 月新增技能已在 GitHub 发布，但尚未生成 dist zip，故不填写校验哈希，也不把它们写成已上架 SkillHub。
 
 本文件按 SkillHub 发布页字段整理。上传文件使用 `dist/*.zip`，每个 zip 内均包含 `SKILL.md`。
 
@@ -54,3 +56,53 @@
 - `dist/poc-to-contract-closer.zip`：`8638ecd14a72a99a73d6bccbdd5c7145530632a6985729c2bde0f6ef5235e562`
 - `dist/rag-hallucination-governor.zip`：`1bdc64c4b542d596b0ae69447d5c222701a562d94c6703ccebe6a1df3a3deda1`
 - `dist/tob-competitor-snip.zip`：`badda0a8abfd32458eb1864e154251479f080b6bc28e8873e24b7c9c8138ab68`
+
+## 待打包（GitHub 已有，无 dist zip）
+
+字段来自各技能 SKILL.md。未生成 zip，不上校验哈希。
+
+### 5. 企业AI实施知识库
+
+- Slug：`enterprise-ai-knowledge`
+- 显示名称：`企业AI实施知识库`
+- 描述：企业AI实施知识库。8大洞察、5阶段教学计划、4级能力成长路线图。
+- 版本号：`1.0.0`
+- 展示说明：仅有 SKILL.md
+- SkillHub / ClawHub：未记录
+
+### 6. 行业ROI测算卡
+
+- Slug：`industry-roi-calculator`
+- 显示名称：`行业ROI测算卡`
+- 描述：输入客户行业、规模、场景和当前成本，输出 ROI 测算卡、PoC 范围建议、风险假设和案例引用。
+- 版本号：`1.0.0`
+- 展示说明：仅有 SKILL.md；有 CLI 与 tests
+- SkillHub / ClawHub：未记录
+
+### 7. 知识库灌入
+
+- Slug：`knowledge-base-ingestion`
+- 显示名称：`知识库灌入`
+- 描述：将外部知识库提取内容并灌入向量数据库的标准流程。核心脚本不在本目录。
+- 版本号：`3.0.1`
+- 展示说明：仅有 SKILL.md
+- SkillHub / ClawHub：未记录
+
+### 8. 知识图谱管理
+
+- Slug：`ontology-knowledge-graph-mgmt`
+- 显示名称：`知识图谱管理`
+- 描述：知识图谱的补录、同步、修复、搜索全流程。核心脚本不在本目录。
+- 版本号：`2.0.1`
+- 展示说明：仅有 SKILL.md
+- SkillHub / ClawHub：未记录
+
+### 9. POC预算论证
+
+- Slug：`tob-poc-budget-justify`
+- 显示名称：`POC预算论证`
+- 描述：输入客户/行业/POC目标，输出POC范围界定、资源估算和预算论证。
+- 版本号：`1.0.0`
+- 展示说明：仅有 SKILL.md；有 CLI，无独立 tests 目录
+- SkillHub / ClawHub：未记录
+
