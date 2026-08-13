@@ -1,6 +1,6 @@
 # ToB Skill 套件 — Roadmap
 
-更新日期：2026-06-03
+更新日期：2026-08-13
 
 ## 定位
 
@@ -21,10 +21,15 @@
 | `delivery-risk-compass` | 交付风险判断 | 已发布 | 维护 |
 | `tob-win-loss-review` | 丢单复盘 | 已发布 | 维护 |
 | `tob-sales-proposal` | 销售提案 | 已发布 | 后续可统一测试依赖 |
-| `rag-hallucination-governor` | RAG 幻觉治理 | 已开发 / 自测通过 / 待发布 | 发布确认 |
-| `tob-competitor-snip` | 竞品狙击卡片 | 已开发 / 自测通过 / 待发布 | 发布确认 |
-| `tob-poc-war-room` | POC 战情室 | 已开发 / 自测通过 / 质量审查通过 / 待发布 | 发布确认 |
-| `poc-to-contract-closer` | POC 转签约 | 已开发 / 自测通过 / 质量审查通过 / 待发布 | 首次注册发布 |
+| `rag-hallucination-governor` | RAG 幻觉治理 | 已发布 | 维护 |
+| `tob-competitor-snip` | 竞品狙击卡片 | 已发布 | 维护 |
+| `tob-poc-war-room` | POC 战情室 | 已发布 | 维护 |
+| `poc-to-contract-closer` | POC 转签约 | 已发布 | 维护 |
+| `enterprise-ai-knowledge` | 企业AI实施知识库 | 已发布 | 维护 |
+| `industry-roi-calculator` | 行业ROI测算 | 已发布 | 维护 |
+| `knowledge-base-ingestion` | 知识库灌入 | 已发布（核心脚本不在本目录） | 确认外部脚本是否纳入仓库 |
+| `ontology-knowledge-graph-mgmt` | 知识图谱管理 | 已发布（核心脚本不在本目录） | 确认外部脚本是否纳入仓库 |
+| `tob-poc-budget-justify` | POC预算论证 | 已发布 | 可补独立测试 |
 | `tob-competitor-analyzer` | 深度竞品分析 | 待开发 | 重新定义联网/资料边界 |
 
 ## 建议后续方向
@@ -78,6 +83,10 @@ npm test --prefix rag-hallucination-governor
 npm test --prefix tob-competitor-snip
 npm test --prefix tob-poc-war-room
 npm test --prefix poc-to-contract-closer
+npm test --prefix industry-roi-calculator
+npm test --prefix tob-poc-budget-justify
 ```
 
 `tob-sales-proposal` 当前使用 Jest 依赖，发布前如需纳入一键全量测试，应先补齐依赖安装或改为无外部依赖 smoke test。
+
+`knowledge-base-ingestion` 与 `ontology-knowledge-graph-mgmt` 的可执行脚本声明为外部依赖，不在本 monorepo 目录内，故未纳入上述测试命令。
